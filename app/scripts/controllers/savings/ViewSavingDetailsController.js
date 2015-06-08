@@ -9,6 +9,28 @@
             scope.staffData = {};
             scope.fieldOfficers = [];
             scope.savingaccountdetails = [];
+
+
+
+
+            scope.routeToLoan = function (loan_id) {
+                location.path('/viewloanaccount/' + loan_id);
+            };
+            scope.routeToAddInvestment = function(){
+              location.path("/add_saving_investment");
+            };
+
+            resourceFactory.savingsInvestmentResource.get({savingId: routeParams.id},function (data) {
+                scope.loans = data;
+            });
+
+            resourceFactory.savingsResource.get({accountId: routeParams.id, associations: 'all'}, function (data){
+                scope.saving = data;
+            });
+
+
+
+
             scope.isDebit = function (savingsTransactionType) {
                 return savingsTransactionType.withdrawal == true || savingsTransactionType.feeDeduction == true;
             };
@@ -19,6 +41,10 @@
                 } else {
                     location.path('/viewsavingtrxn/' + savingsAccountId + '/trxnId/' + transactionId);
                 }
+            };
+
+            scope.savingInvestment = function(){
+                location.path('/saving_investment/' + routeParams.id);
             };
 
             /***

@@ -1,0 +1,60 @@
+<div class="col-md-12" ng-controller="AddSavingInvestmentController">
+    <ul class="breadcrumb">
+    </ul>
+    <form name="createclientform" novalidate="" class="form-horizontal well" rc-submit="submit()">
+        <api-validate></api-validate>
+        <fieldset>
+            <legend>Saving Investment Mapping </legend>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Client Name</label>
+                <div class="col-sm-3">
+                    <select chosen="clients" id="id" ng-model="formData.id"  class="form-control"
+                            ng-change="selectLoans(formData.id)"
+                            ng-options="client.id as client.displayName for client in clients" value="{{client.id}}">
+                        <option value="">--Select client --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Available Loans</label>
+                <div class="col-sm-3">
+                    <select chosen="loan" ng-model="formData.Id"  class="form-control"
+                            ng-options="ln.Id as ln.productName for ln in loan" value="{{ln.Id}}">
+                        <option value="">--Select Loans --</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn bg-primary" ng-click='addInvestment(formData.Id)'><i class="icon-plus"></i></a>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <table class="table " style="table-layout: fixed;">
+                    <thead>
+                        <tr class="graybg">
+                           <th> Client Name </th>
+                           <th> Loan Product Name</th>
+                           <th> Loan Account No  </th>
+                           <th> Loan Amount</th>
+
+                         </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="sam in sample">
+                        <td>{{sam.clientName}}</td>
+                        <td> {{sam.loanProductName}}</td>
+                        <td>{{sam.accountNo}}</td>
+                        <td> {{sam.principal}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-offset-5">
+                <a id="cancel" ng-href="{{cancel}}" class="btn btn-default">{{'label.button.cancel' | translate}}</a>
+                <button id="save" type="submit" class="btn btn-primary"  ng-hide="blockUI" has-permission='CREATE_CLIENT'>{{'label.button.save' | translate}}</button>
+                <button class="btn btn-info" ng-show="blockUI"><strong>{{'label.button.processing' | translate}}</strong></button>
+            </div>
+        </fieldset>
+    </form>
+</div>

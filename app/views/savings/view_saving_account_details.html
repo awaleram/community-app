@@ -340,6 +340,41 @@
 
                     </div>
                 </tab>
+
+
+
+                <tab heading="Investment">
+                    <div>
+                        <button class="btn btn-primary right"  ng-click="routeToAddInvestment()"><i class="icon-plus icon-white"></i> Add Investment</button>
+                    </div>
+
+                        <table class="table" >
+                            <thead>
+                            <tr class="graybg">
+                                <th> Client Name </th>
+                                <th> Loan Product Name</th>
+                                <th> Loan Account No</th>
+                                <th> Loan Amount</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="pointer-main" ng-repeat="loan in loans |orderBy:'name':reverse">
+
+                                <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)">{{loan.name}}</td>
+                                <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)"> {{loan.productname}}</td>
+                                <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)">{{loan.accountno}}</td>
+                                <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)"> {{loan.loanammount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                </tab>
+
+
+
+
                 <tab heading="{{savingdatatable.registeredTableName}}" ng-repeat="savingdatatable in savingdatatables" has-permission='READ_{{savingdatatable.registeredTableName}}'
                      select="dataTableChange(savingdatatable)">
                     <div data-ng-show="choice" class="btn-group pull-right">

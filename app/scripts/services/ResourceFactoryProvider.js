@@ -297,6 +297,10 @@
                     savingsTemplateResource: defineResource(apiVer + "/savingsaccounts/template", {}, {
                         get: {method: 'GET', params: {}}
                     }),
+                    savingsInvestmentResource: defineResource(apiVer + "/savingInvestment/:savingId",{
+                        savingsId: '@savingsId'},{
+                        get: {method: 'GET', params: {}, isArray: true}
+                    }),
                     savingsResource: defineResource(apiVer + "/savingsaccounts/:accountId/:resourceType/:chargeId", {accountId: '@accountId', resourceType: '@resourceType', chargeId: '@chargeId'}, {
                         get: {method: 'GET', params: {}},
                         getAllNotes: {method: 'GET', params: {}, isArray: true},

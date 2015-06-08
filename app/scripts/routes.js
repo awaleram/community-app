@@ -469,6 +469,12 @@
             .when('/viewsavingaccount/:id', {
                 templateUrl: 'views/savings/view_saving_account_details.html'
             })
+            .when('/saving_investment/:id', {
+                templateUrl: 'views/savings/saving_investment.html'
+            })
+            .when('/add_saving_investment', {
+                templateUrl: 'views/savings/add_saving_investment.html'
+            })
             .when('/savings/:savingId/viewcharge/:id', {
                 templateUrl: 'views/savings/viewsavingscharge.html'
             })
