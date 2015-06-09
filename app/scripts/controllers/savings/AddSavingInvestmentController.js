@@ -1,10 +1,10 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
         AddSavingInvestmentController: function (scope, location, resourceFactory) {
-        scope.formData = {};
+            scope.formData = {};
 
-          scope.clients = [];
-          scope.names = [];
+            scope.clients = [];
+            scope.names = [];
             scope.loan = [];
             resourceFactory.clientResource.getAllClients(function(data){
                 scope.clients = data.pageItems;
