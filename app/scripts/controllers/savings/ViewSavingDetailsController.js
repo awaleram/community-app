@@ -17,7 +17,7 @@
                 location.path('/viewloanaccount/' + loan_id);
             };
             scope.routeToAddInvestment = function(){
-              location.path("/add_saving_investment");
+              location.path('/add_saving_investment/' + routeParams.id);
             };
 
             resourceFactory.savingsInvestmentResource.get({savingId: routeParams.id},function (data) {

@@ -297,8 +297,8 @@
                     savingsTemplateResource: defineResource(apiVer + "/savingsaccounts/template", {}, {
                         get: {method: 'GET', params: {}}
                     }),
-                    savingsInvestmentResource: defineResource(apiVer + "/savingInvestment/:savingId",{
-                        savingsId: '@savingsId'},{
+                    savingsInvestmentResource: defineResource(apiVer + "/savingsaccounts/:savingId/savingInvestment",{
+                       savingId:'@savingId'},{
                         get: {method: 'GET', params: {}, isArray: true}
                     }),
                     savingsResource: defineResource(apiVer + "/savingsaccounts/:accountId/:resourceType/:chargeId", {accountId: '@accountId', resourceType: '@resourceType', chargeId: '@chargeId'}, {
