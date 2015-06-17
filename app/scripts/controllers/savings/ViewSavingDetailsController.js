@@ -9,11 +9,14 @@
             scope.staffData = {};
             scope.fieldOfficers = [];
             scope.savingaccountdetails = [];
+            scope.offices = [];
 
 
+          /*  scope.hasPermission = function(){
+                alert("permission :" + this.hasPermission[0].name);
+            }*/
 
-
-            scope.routeToLoan = function (loan_id) {
+                scope.routeToLoan = function (loan_id) {
                 location.path('/viewloanaccount/' + loan_id);
             };
             scope.routeToAddInvestment = function(){
@@ -22,13 +25,20 @@
 
             resourceFactory.savingsInvestmentResource.get({savingId: routeParams.id},function (data) {
                 scope.loans = data;
+
             });
 
             resourceFactory.savingsResource.get({accountId: routeParams.id, associations: 'all'}, function (data){
                 scope.saving = data;
+
             });
 
 
+            scope.routeToDelete = function(loan_id){
+                resourceFactory.savingsInvestmentResource.delete({savingId: routeParams.id, loanId: loan_id}, function(data){
+                    route.reload();
+                });
+            }
 
 
             scope.isDebit = function (savingsTransactionType) {
@@ -135,6 +145,20 @@
 
             resourceFactory.savingsResource.get({accountId: routeParams.id, associations: 'all'}, function (data) {
                 scope.savingaccountdetails = data;
+
+
+            /*    resourceFactory.clientResource.get({clientId: scope.savingaccountdetails.clientId}, function (data) {
+                    scope.offices = data;
+                    if(scope.offices.officeName == 'HeadOffice'){
+                       scope.showData = true;
+                    }
+                    else{
+                        alert("office is not match ");
+                    }
+                });
+*/
+               scope.showData = true;
+
                 scope.showonhold = true;
                 if(angular.isUndefined(data.onHoldFunds)){
                     scope.showonhold = false;

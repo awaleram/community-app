@@ -1,7 +1,7 @@
 <div class="col-md-12" ng-controller="AddSavingInvestmentController">
     <ul class="breadcrumb">
     </ul>
-    <form name="createclientform" novalidate="" class="form-horizontal well" rc-submit="submit()">
+    <form name="createinvestmentform" novalidate="" class="form-horizontal well" rc-submit="submit()">
         <api-validate></api-validate>
         <fieldset>
             <legend>Saving Investment Mapping </legend>
@@ -18,8 +18,8 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Available Loans</label>
                 <div class="col-sm-3">
-                    <select chosen="loan" ng-model="formData.Id"  class="form-control"
-                            ng-options="ln.Id as ln.productName for ln in loan" value="{{ln.Id}}">
+                    <select chosen="loans" ng-model="formData.Id"  class="form-control"
+                            ng-options="ln.Id as ln.productName for ln in loans" value="{{ln.Id}}">
                         <option value="">--Select Loans --</option>
                     </select>
                 </div>
@@ -36,23 +36,22 @@
                            <th> Loan Product Name</th>
                            <th> Loan Account No  </th>
                            <th> Loan Amount</th>
-
                          </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="sam in sample">
-                        <td>{{sam.clientName}}</td>
-                        <td> {{sam.loanProductName}}</td>
-                        <td>{{sam.accountNo}}</td>
-                        <td> {{sam.principal}}</td>
-                    </tr>
+                    <tr ng-repeat="investment in savingInvestment">
+                        <td>{{investment.name}}</td>
+                        <td> {{investment.productname}}</td>
+                        <td>{{investment.accountno}}</td>
+                        <td> {{investment.loanammount}}</td>
+                       </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="col-md-offset-5">
                 <button class="btn btn-primary" ng-click="gotoBack()"> Cancle</button>
-                <button id="save" type="submit" ng-click="abc()" class="btn btn-primary"  ng-hide="blockUI">{{'label.button.save' | translate}}</button>
+                <button id="save" type="submit" ng-click="submitData()" class="btn btn-primary"  ng-hide="blockUI">{{'label.button.save' | translate}}</button>
                 <button class="btn btn-info" ng-show="blockUI"><strong>{{'label.button.processing' | translate}}</strong></button>
             </div>
         </fieldset>

@@ -299,7 +299,8 @@
                     }),
                     savingsInvestmentResource: defineResource(apiVer + "/savingsaccounts/:savingId/savingInvestment",{
                        savingId:'@savingId'},{
-                        get: {method: 'GET', params: {}, isArray: true}
+                        get: {method: 'GET', params: {}, isArray: true},
+                        delete:{method:'DELETE',params:{loanId: '@loanId'}}
                     }),
                     savingsResource: defineResource(apiVer + "/savingsaccounts/:accountId/:resourceType/:chargeId", {accountId: '@accountId', resourceType: '@resourceType', chargeId: '@chargeId'}, {
                         get: {method: 'GET', params: {}},
