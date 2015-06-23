@@ -11,12 +11,7 @@
             scope.savingaccountdetails = [];
             scope.offices = [];
 
-
-          /*  scope.hasPermission = function(){
-                alert("permission :" + this.hasPermission[0].name);
-            }*/
-
-                scope.routeToLoan = function (loan_id) {
+            scope.routeToLoan = function (loan_id) {
                 location.path('/viewloanaccount/' + loan_id);
             };
             scope.routeToAddInvestment = function(){

@@ -302,6 +302,13 @@
                         get: {method: 'GET', params: {}, isArray: true},
                         delete:{method:'DELETE',params:{loanId: '@loanId'}}
                     }),
+
+                    loanInvestmentResource: defineResource(apiVer + "/loans/:loanId/loanInvestment",{
+                        loanId: '@loanId'}, {
+                        get: {method: 'GET', params:{}, isArray: true},
+                        delete:{method: 'DELETE', params:{loanId: '@loanId'}}
+                    }),
+
                     savingsResource: defineResource(apiVer + "/savingsaccounts/:accountId/:resourceType/:chargeId", {accountId: '@accountId', resourceType: '@resourceType', chargeId: '@chargeId'}, {
                         get: {method: 'GET', params: {}},
                         getAllNotes: {method: 'GET', params: {}, isArray: true},

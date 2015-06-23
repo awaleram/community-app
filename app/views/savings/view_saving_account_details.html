@@ -343,22 +343,21 @@
 
 
 
-                <tab heading="Investment" ng-show="savingaccountdetails.groupId" has-permission="CREATE_SAVINGINVESTMENT">
+                <tab heading="Investment"  has-permission="CREATE_SAVINGINVESTMENT">
 
-                        <div ng-show="savingaccountdetails.groupId" has-permission="CREATE_SAVINGINVESTMENT">
-                            <button class="btn btn-primary pull-right" ng-click="routeToAddInvestment()"><i class="icon-plus icon-white"></i> Add Investment</button>
-
-                         </div>
+                        <div has-permission="CREATE_SAVINGINVESTMENT">
+                            <button class="btn btn-primary pull-right" ng-click="routeToAddInvestment()"><i class="icon-plus icon-white"></i> {{'label.button.addinvestment' | translate}}</button>
+                        </div>
                     <br>
-                      <div ng-show="savingaccountdetails.groupId" has-permission="CREATE_SAVINGINVESTMENT">
-                        <table class="table">
+
+                        <table class="table" has-permission="CREATE_SAVINGINVESTMENT">
                             <thead>
                             <tr class="graybg">
-                                <th> Client Name </th>
-                                <th> Loan Product Name</th>
-                                <th> Loan Account No</th>
-                                <th> Loan Amount</th>
-                                <th> Delete Investment </th>
+                                <th>{{'label.heading.clientname' | translate}} </th>
+                                <th> {{'label.heading.loanproductname' | translate}}</th>
+                                <th> {{'label.heading.loanaccountno' | translate}}</th>
+                                <th> {{'label.heading.loanamount' | translate}}</th>
+                                <th> {{'label.heading.deleteinvestment' | translate}}</th>
 
                             </tr>
                             </thead>
@@ -376,7 +375,7 @@
                             </tr>
                             </tbody>
                         </table>
-                      </div>
+
                     </br>
 
                 </tab>

@@ -1,4 +1,4 @@
-<div class="col-md-12" ng-controller="AddSavingInvestmentController">
+<div class="col-md-12" ng-controller="AddLoanInvestmentController">
     <ul class="breadcrumb">
     </ul>
     <form name="createinvestmentform" novalidate="" class="form-horizontal well" rc-submit="submit()">
@@ -6,21 +6,21 @@
         <fieldset>
             <legend>Investment Mapping </legend>
             <div class="form-group">
-                <label class="control-label col-sm-2">{{'label.heading.clientname' | translate}}</label>
+                <label class="control-label col-sm-2">{{'label.heading.groupname' | translate}}</label>
                 <div class="col-sm-3">
-                    <select chosen="clients" id="id" ng-model="formData.id"  class="form-control"
-                            ng-change="selectLoans(formData.id)"
-                            ng-options="client.id as client.displayName for client in clients" value="{{client.id}}">
-                        <option value="">--Select client --</option>
+                    <select chosen="groups" id="id" ng-model="formData.id"  class="form-control"
+                            ng-change="selectSaving(formData.id)"
+                            ng-options="group.id as group.name for group in groups" value="{{group.id}}">
+                        <option value="">--Select Group --</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2">{{'label.heading.availableloans' | translate}}</label>
+                <label class="control-label col-sm-2">{{'label.heading.availablesavings' | translate}}</label>
                 <div class="col-sm-3">
                     <select chosen="loans" ng-model="formData.Id"  class="form-control"
                             ng-options="ln.Id as ln.productName for ln in loans" value="{{ln.Id}}">
-                        <option value="">--Select Loans --</option>
+                        <option value="">--Select Saving --</option>
                     </select>
                 </div>
                 <div class="col-md-1">
@@ -31,20 +31,20 @@
             <div class="form-group">
                 <table class="table " style="table-layout: fixed;">
                     <thead>
-                        <tr class="graybg">
-                           <th> {{'label.heading.clientname' | translate}}</th>
-                           <th> {{'label.heading.loanproductname' | translate}}</th>
-                           <th> {{'label.heading.loanaccountno' | translate}}</th>
-                           <th> {{'label.heading.loanamount' | translate}}</th>
-                         </tr>
+                    <tr class="graybg">
+                        <th> {{'label.heading.groupname' | translate}} </th>
+                        <th> {{'label.heading.savingproductname' | translate}}</th>
+                        <th> {{'label.heading.savingaccountno' | translate}}  </th>
+                        <th> {{'label.heading.savingamount' | translate}}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="investment in savingInvestment">
+                    <tr ng-repeat="investment in loanInvestment">
                         <td>{{investment.name}}</td>
                         <td> {{investment.productname}}</td>
                         <td>{{investment.accountno}}</td>
-                        <td> {{investment.loanammount}}</td>
-                       </tr>
+                        <td> {{investment.savingamount}}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

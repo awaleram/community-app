@@ -10,6 +10,27 @@
             scope.hideAccrualTransactions = false;
             scope.isHideAccrualsCheckboxChecked = true;
             scope.loandetails = [];
+
+
+            scope.routeToAddInvestment = function(){
+                location.path('/addloaninvestment/' + routeParams.id);
+            };
+
+            resourceFactory.loanInvestmentResource.get({loanId: routeParams.id},function (data) {
+                scope.loanInvestment = data;
+
+            });
+
+            scope.routeToDelete = function(saving_id){
+                resourceFactory.loanInvestmentResource.delete({savingId: saving_id, loanId: routeParams.id}, function(data){
+                    route.reload();
+                });
+            }
+
+            scope.routeToSaving = function (saving_id) {
+                location.path('/viewsavingaccount/' + saving_id);
+            };
+
             scope.updateCheckBoxStatus = function (){
                 scope.isHideAccrualsCheckboxChecked = !scope.isHideAccrualsCheckboxChecked;
             };

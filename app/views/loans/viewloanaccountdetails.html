@@ -804,6 +804,52 @@
                             </div>
                         </div>
                     </tab>
+
+
+
+
+                    <tab heading="Investment"  has-permission="CREATE_LOANINVESTMENT">
+
+                        <div has-permission="CREATE_LOANINVESTMENT">
+                            <button class="btn btn-primary pull-right" ng-click="routeToAddInvestment()"><i class="icon-plus icon-white"></i> {{'label.button.addinvestment' | translate}}</button>
+                        </div>
+                        <br>
+
+                        <table class="table" has-permission="CREATE_LOANINVESTMENT">
+                            <thead>
+                            <tr class="graybg">
+                                <th> {{'label.heading.groupname' | translate}} </th>
+                                <th> {{'label.heading.savingproductname' | translate}}</th>
+                                <th> {{'label.heading.savingaccountno' | translate}}</th>
+                                <th> {{'label.heading.savingamount' | translate}}</th>
+                                <th> {{'label.heading.deleteinvestment' | translate}} </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="pointer-main" ng-repeat="loan in loanInvestment |orderBy:'name':reverse">
+
+                                <td class="pointer" data-ng-click="routeToSaving(loan.saving_id)">{{loan.name}}</td>
+                                <td class="pointer" data-ng-click="routeToSaving(loan.saving_id)"> {{loan.productname}}</td>
+                                <td class="pointer" data-ng-click="routeToSaving(loan.saving_id)">{{loan.accountno}}</td>
+                                <td class="pointer" data-ng-click="routeToSaving(loan.saving_id)"> {{loan.savingamount}}</td>
+                                <td>
+                                    <a class="btn btn-danger" data-ng-click="routeToDelete(loan.saving_id)"><i class="icon-trash "></i></a>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        </br>
+
+                    </tab>
+
+
+
+
+
+
                     <tab heading="{{loandatatable.registeredTableName}}" ng-repeat="loandatatable in loandatatables" has-permission='READ_{{loandatatable.registeredTableName}}'
                          select="dataTableChange(loandatatable)">
                         <div>
