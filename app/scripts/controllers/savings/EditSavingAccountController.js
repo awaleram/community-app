@@ -52,6 +52,7 @@
                 scope.formData.overdraftLimit = data.overdraftLimit;
                 scope.formData.enforceMinRequiredBalance = data.enforceMinRequiredBalance;
                 scope.formData.minRequiredBalance = data.minRequiredBalance;
+                scope.formData.releaseguarantor = data.releaseguarantor == true? 'true' : 'false';
 
                 if (data.interestCompoundingPeriodType) scope.formData.interestCompoundingPeriodType = data.interestCompoundingPeriodType.id;
                 if (data.interestPostingPeriodType) scope.formData.interestPostingPeriodType = data.interestPostingPeriodType.id;

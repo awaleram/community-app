@@ -36,7 +36,9 @@
                     overdraftLimit: data.overdraftLimit,
                     minBalanceForInterestCalculation: data.minBalanceForInterestCalculation,
                     enforceMinRequiredBalance: data.enforceMinRequiredBalance,
-                    minRequiredBalance:data.minRequiredBalance
+                    minRequiredBalance:data.minRequiredBalance,
+                    releaseguarantor: data.releaseguarantor == true? 'true' : 'false'
+
 
                 }
 
