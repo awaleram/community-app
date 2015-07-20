@@ -73,14 +73,21 @@
                         if (chargeTimeType === scope.template.chargeTimeTypeOptions[i].id) {
                             if (scope.template.chargeTimeTypeOptions[i].value == "Annual Fee" || scope.template.chargeTimeTypeOptions[i].value == "Monthly Fee") {
                                 scope.showdatefield = true;
+                                scope.addfeefrequency = false;
                                 //to show 'repeats every' field for monthly fee
                                 if (scope.template.chargeTimeTypeOptions[i].value == "Monthly Fee") {
                                     scope.repeatEvery = true;
                                 } else {
                                     scope.repeatEvery = false;
                                 }
-                            } else {
+                            }else if(scope.template.chargeTimeTypeOptions[i].value == "Savings Late Fee"){
+                                scope.addfeefrequency = true;
+                                scope.repeatEvery = false;
                                 scope.showdatefield = false;
+                            }
+                            else {
+                                scope.showdatefield = false;
+                                scope.addfeefrequency = false;
                             }
                         }
                     }
@@ -92,6 +99,9 @@
                         var reqDate = dateFilter(scope.first.date, 'dd MMMM');
                         this.formData.monthDayFormat = 'dd MMM';
                         this.formData.feeOnMonthDay = reqDate;
+                    }else if(scope.addfeefrequency == false){
+                        this.formData.feeFrequency = null;
+                        this.formData.feeInterval = null;
                     }
                 }else if(scope.addfeefrequency == 'false'){
                     scope.formData.feeFrequency = null;
