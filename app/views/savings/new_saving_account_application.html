@@ -216,6 +216,14 @@
                             {{'label.'+labelchargeerror | translate}}
                         </small>
                       </span>
+
+                      <span ng-show="showMsg">
+                        <small class="error">
+                             Deposit Late Fee Charge will be apply to this Saving Account
+                        </small>
+                      </span>
+
+
     <table class="table" width="100%" ng-show="charges.length>0">
         <tr class="graybg">
             <th>{{'label.heading.name' | translate}}</th>

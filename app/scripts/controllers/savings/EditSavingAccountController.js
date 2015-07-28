@@ -141,7 +141,10 @@
                         } else if (scope.charges[i].chargeTimeType.value == 'Monthly Fee') {
                             this.formData.charges.push({ chargeId: scope.charges[i].chargeId, amount: scope.charges[i].amount,
                                 feeOnMonthDay: dateFilter(scope.charges[i].feeOnMonthDay, 'dd MMMM'), feeInterval: scope.charges[i].feeInterval});
-                        } else {
+                        }else if(scope.charges[i].chargeTimeType.value == 'Savings Late Fee'){
+                            this.formData.charges.push();
+                        }
+                        else {
                             this.formData.charges.push({ chargeId: scope.charges[i].chargeId, amount: scope.charges[i].amount});
                         }
                     }
