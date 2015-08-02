@@ -12,17 +12,22 @@
             scope.loandetails = [];
 
 
-            scope.routeToAddInvestment = function(){
-                location.path('/addloaninvestment/' + routeParams.id);
+            scope.showAddInvestment = true;
+
+            scope.routeToAddInvestment = function () {
+                scope.showAddInvestment = false;
             };
 
-            resourceFactory.loanInvestmentResource.get({loanId: routeParams.id},function (data) {
+            resourceFactory.loanInvestmentResource.get({loanId: routeParams.id}, function (data) {
                 scope.loanInvestment = data;
 
             });
 
-            scope.routeToDelete = function(saving_id){
-                resourceFactory.loanInvestmentResource.delete({savingId: saving_id, loanId: routeParams.id}, function(data){
+            scope.routeToDelete = function (saving_id) {
+                resourceFactory.loanInvestmentResource.delete({
+                    savingId: saving_id,
+                    loanId: routeParams.id
+                }, function (data) {
                     route.reload();
                 });
             }
@@ -31,7 +36,7 @@
                 location.path('/viewsavingaccount/' + saving_id);
             };
 
-            scope.updateCheckBoxStatus = function (){
+            scope.updateCheckBoxStatus = function () {
                 scope.isHideAccrualsCheckboxChecked = !scope.isHideAccrualsCheckboxChecked;
             };
             scope.routeTo = function (loanId, transactionId, transactionTypeId) {
@@ -46,8 +51,8 @@
              * api returns dates in array format[yyyy, mm, dd], converting the array of dates to date object
              * @param dateFieldName
              */
-            scope.convertDateArrayToObject = function(dateFieldName){
-                for(var i in scope.loandetails.transactions){
+            scope.convertDateArrayToObject = function (dateFieldName) {
+                for (var i in scope.loandetails.transactions) {
                     scope.loandetails.transactions[i][dateFieldName] = new Date(scope.loandetails.transactions[i].date);
                 }
             };
@@ -153,7 +158,11 @@
 
             var DelChargeCtrl = function ($scope, $modalInstance, ids) {
                 $scope.delete = function () {
-                    resourceFactory.LoanAccountResource.delete({loanId: routeParams.id, resourceType: 'charges', chargeId: ids}, {}, function (data) {
+                    resourceFactory.LoanAccountResource.delete({
+                        loanId: routeParams.id,
+                        resourceType: 'charges',
+                        chargeId: ids
+                    }, {}, function (data) {
                         $modalInstance.close('delete');
                         route.reload();
                     });
@@ -163,7 +172,11 @@
                 };
             };
 
-            resourceFactory.LoanAccountResource.getLoanAccountDetails({loanId: routeParams.id, associations: 'all',exclude: 'guarantors'}, function (data) {
+            resourceFactory.LoanAccountResource.getLoanAccountDetails({
+                loanId: routeParams.id,
+                associations: 'all',
+                exclude: 'guarantors'
+            }, function (data) {
                 scope.loandetails = data;
                 scope.recalculateInterest = data.recalculateInterest || true;
                 scope.isWaived = scope.loandetails.repaymentSchedule.totalWaived > 0;
@@ -194,28 +207,29 @@
                     scope.choice = true;
                 }
                 if (data.status.value == "Submitted and pending approval") {
-                    scope.buttons = { singlebuttons: [
-                        {
-                            name: "button.addloancharge",
-                            icon: "icon-plus-sign",
-                            taskPermissionName: 'CREATE_LOANCHARGE'
-                        },
-                        {
-                            name: "button.approve",
-                            icon: "icon-ok",
-                            taskPermissionName: 'APPROVE_LOAN'
-                        },
-                        {
-                            name: "button.modifyapplication",
-                            icon: "icon-edit",
-                            taskPermissionName: 'UPDATE_LOAN'
-                        },
-                        {
-                            name: "button.reject",
-                            icon: "icon-remove",
-                            taskPermissionName: 'REJECT_LOAN'
-                        }
-                    ],
+                    scope.buttons = {
+                        singlebuttons: [
+                            {
+                                name: "button.addloancharge",
+                                icon: "icon-plus-sign",
+                                taskPermissionName: 'CREATE_LOANCHARGE'
+                            },
+                            {
+                                name: "button.approve",
+                                icon: "icon-ok",
+                                taskPermissionName: 'APPROVE_LOAN'
+                            },
+                            {
+                                name: "button.modifyapplication",
+                                icon: "icon-edit",
+                                taskPermissionName: 'UPDATE_LOAN'
+                            },
+                            {
+                                name: "button.reject",
+                                icon: "icon-remove",
+                                taskPermissionName: 'REJECT_LOAN'
+                            }
+                        ],
                         options: [
                             {
                                 name: "button.assignloanofficer",
@@ -251,28 +265,29 @@
                 }
 
                 if (data.status.value == "Approved") {
-                    scope.buttons = { singlebuttons: [
-                        {
-                            name: "button.assignloanofficer",
-                            icon: "icon-user",
-                            taskPermissionName: 'UPDATELOANOFFICER_LOAN'
-                        },
-                        {
-                            name: "button.disburse",
-                            icon: "icon-flag",
-                            taskPermissionName: 'DISBURSE_LOAN'
-                        },
-                        {
-                            name: "button.disbursetosavings",
-                            icon: "icon-flag",
-                            taskPermissionName: 'DISBURSETOSAVINGS_LOAN'
-                        },
-                        {
-                            name: "button.undoapproval",
-                            icon: "icon-undo",
-                            taskPermissionName: 'APPROVALUNDO_LOAN'
-                        }
-                    ],
+                    scope.buttons = {
+                        singlebuttons: [
+                            {
+                                name: "button.assignloanofficer",
+                                icon: "icon-user",
+                                taskPermissionName: 'UPDATELOANOFFICER_LOAN'
+                            },
+                            {
+                                name: "button.disburse",
+                                icon: "icon-flag",
+                                taskPermissionName: 'DISBURSE_LOAN'
+                            },
+                            {
+                                name: "button.disbursetosavings",
+                                icon: "icon-flag",
+                                taskPermissionName: 'DISBURSETOSAVINGS_LOAN'
+                            },
+                            {
+                                name: "button.undoapproval",
+                                icon: "icon-undo",
+                                taskPermissionName: 'APPROVALUNDO_LOAN'
+                            }
+                        ],
                         options: [
                             {
                                 name: "button.addloancharge",
@@ -296,23 +311,24 @@
                 }
 
                 if (data.status.value == "Active") {
-                    scope.buttons = { singlebuttons: [
-                        {
-                            name: "button.addloancharge",
-                            icon: "icon-plus-sign",
-                            taskPermissionName: 'CREATE_LOANCHARGE'
-                        },
-                        {
-                            name: "button.makerepayment",
-                            icon: "icon-dollar",
-                            taskPermissionName: 'REPAYMENT_LOAN'
-                        },
-                        {
-                            name: "button.undodisbursal",
-                            icon: "icon-undo",
-                            taskPermissionName: 'DISBURSALUNDO_LOAN'
-                        }
-                    ],
+                    scope.buttons = {
+                        singlebuttons: [
+                            {
+                                name: "button.addloancharge",
+                                icon: "icon-plus-sign",
+                                taskPermissionName: 'CREATE_LOANCHARGE'
+                            },
+                            {
+                                name: "button.makerepayment",
+                                icon: "icon-dollar",
+                                taskPermissionName: 'REPAYMENT_LOAN'
+                            },
+                            {
+                                name: "button.undodisbursal",
+                                icon: "icon-undo",
+                                taskPermissionName: 'DISBURSALUNDO_LOAN'
+                            }
+                        ],
                         options: [
                             {
                                 name: "button.waiveinterest",
@@ -372,7 +388,7 @@
                         });
                     }
 
-                    if(scope.recalculateInterest){
+                    if (scope.recalculateInterest) {
                         scope.buttons.singlebuttons.splice(1, 0, {
                             name: "button.prepayment",
                             icon: "icon-money",
@@ -381,35 +397,45 @@
                     }
                 }
                 if (data.status.value == "Overpaid") {
-                    scope.buttons = { singlebuttons: [
-                        {
-                            name: "button.transferFunds",
-                            icon: "icon-exchange",
-                            taskPermissionName: 'CREATE_ACCOUNTTRANSFER'
-                        }
-                    ]
+                    scope.buttons = {
+                        singlebuttons: [
+                            {
+                                name: "button.transferFunds",
+                                icon: "icon-exchange",
+                                taskPermissionName: 'CREATE_ACCOUNTTRANSFER'
+                            }
+                        ]
                     };
                 }
                 if (data.status.value == "Closed (written off)") {
-                    scope.buttons = { singlebuttons: [
-                        {
-                            name: "button.recoverypayment",
-                            icon: "icon-briefcase",
-                            taskPermissionName: 'RECOVERYPAYMENT_LOAN'
-                        }
-                    ]
+                    scope.buttons = {
+                        singlebuttons: [
+                            {
+                                name: "button.recoverypayment",
+                                icon: "icon-briefcase",
+                                taskPermissionName: 'RECOVERYPAYMENT_LOAN'
+                            }
+                        ]
                     };
                 }
             });
 
-            resourceFactory.loanResource.getAllNotes({loanId: routeParams.id,resourceType:'notes'}, function (data) {
+            resourceFactory.loanResource.getAllNotes({loanId: routeParams.id, resourceType: 'notes'}, function (data) {
                 scope.loanNotes = data;
             });
 
             scope.saveNote = function () {
-                resourceFactory.loanResource.save({loanId: routeParams.id, resourceType: 'notes'}, this.formData, function (data) {
+                resourceFactory.loanResource.save({
+                    loanId: routeParams.id,
+                    resourceType: 'notes'
+                }, this.formData, function (data) {
                     var today = new Date();
-                    temp = { id: data.resourceId, note: scope.formData.note, createdByUsername: "test", createdOn: today };
+                    temp = {
+                        id: data.resourceId,
+                        note: scope.formData.note,
+                        createdByUsername: "test",
+                        createdOn: today
+                    };
                     scope.loanNotes.push(temp);
                     scope.formData.note = "";
                     scope.predicate = '-id';
@@ -433,8 +459,10 @@
             });
 
             scope.dataTableChange = function (datatable) {
-                resourceFactory.DataTablesResource.getTableDetails({datatablename: datatable.registeredTableName,
-                    entityId: routeParams.id, genericResultSet: 'true'}, function (data) {
+                resourceFactory.DataTablesResource.getTableDetails({
+                    datatablename: datatable.registeredTableName,
+                    entityId: routeParams.id, genericResultSet: 'true'
+                }, function (data) {
                     scope.datatabledetails = data;
                     scope.datatabledetails.isData = data.data.length > 0 ? true : false;
                     scope.datatabledetails.isMultirow = data.columnHeaders[0].columnName == "id" ? true : false;
@@ -474,7 +502,7 @@
                 scope.viewTransactionReport = false;
             };
 
-            scope.viewJournalEntries = function(){
+            scope.viewJournalEntries = function () {
                 location.path("/searchtransaction/").search({loanId: scope.loandetails.id});
             };
 
@@ -484,20 +512,20 @@
                 scope.viewReport = false;
             };
 
-            scope.viewLoanCollateral = function (collateralId){
-                location.path('/loan/'+scope.loandetails.id+'/viewcollateral/'+collateralId).search({status:scope.loandetails.status.value});
+            scope.viewLoanCollateral = function (collateralId) {
+                location.path('/loan/' + scope.loandetails.id + '/viewcollateral/' + collateralId).search({status: scope.loandetails.status.value});
             };
 
-            scope.viewDataTable = function (registeredTableName,data){
+            scope.viewDataTable = function (registeredTableName, data) {
                 if (scope.datatabledetails.isMultirow) {
-                    location.path("/viewdatatableentry/"+registeredTableName+"/"+scope.loandetails.id+"/"+data.row[0]);
-                }else{
-                    location.path("/viewsingledatatableentry/"+registeredTableName+"/"+scope.loandetails.id);
+                    location.path("/viewdatatableentry/" + registeredTableName + "/" + scope.loandetails.id + "/" + data.row[0]);
+                } else {
+                    location.path("/viewsingledatatableentry/" + registeredTableName + "/" + scope.loandetails.id);
                 }
             };
 
             scope.viewLoanChargeDetails = function (chargeId) {
-                location.path('/loan/'+scope.loandetails.id+'/viewcharge/'+chargeId).search({loanstatus:scope.loandetails.status.value});
+                location.path('/loan/' + scope.loandetails.id + '/viewcharge/' + chargeId).search({loanstatus: scope.loandetails.status.value});
             };
 
             scope.viewprintdetails = function () {
@@ -508,15 +536,15 @@
                 scope.hidePentahoReport = true;
                 scope.formData.outputType = 'PDF';
                 scope.baseURL = $rootScope.hostUrl + API_VERSION + "/runreports/" + encodeURIComponent("Client Loan Account Schedule");
-                scope.baseURL += "?output-type=" + encodeURIComponent(scope.formData.outputType) + "&tenantIdentifier=" + $rootScope.tenantIdentifier+"&locale="+scope.optlang.code;
+                scope.baseURL += "?output-type=" + encodeURIComponent(scope.formData.outputType) + "&tenantIdentifier=" + $rootScope.tenantIdentifier + "&locale=" + scope.optlang.code;
 
                 var reportParams = "";
                 scope.startDate = dateFilter(scope.date.fromDate, 'yyyy-MM-dd');
                 scope.endDate = dateFilter(scope.date.toDate, 'yyyy-MM-dd');
                 var paramName = "R_startDate";
-                reportParams += encodeURIComponent(paramName) + "=" + encodeURIComponent(scope.startDate)+ "&";
+                reportParams += encodeURIComponent(paramName) + "=" + encodeURIComponent(scope.startDate) + "&";
                 paramName = "R_endDate";
-                reportParams += encodeURIComponent(paramName) + "=" + encodeURIComponent(scope.endDate)+ "&";
+                reportParams += encodeURIComponent(paramName) + "=" + encodeURIComponent(scope.endDate) + "&";
                 paramName = "R_selectLoan";
                 reportParams += encodeURIComponent(paramName) + "=" + encodeURIComponent(scope.loandetails.accountNo);
                 if (reportParams > "") {
@@ -524,7 +552,7 @@
                 }
                 // allow untrusted urls for iframe http://docs.angularjs.org/error/$sce/insecurl
                 scope.viewReportDetails = $sce.trustAsResourceUrl(scope.baseURL);
-                
+
             };
 
             scope.viewloantransactionreceipts = function (transactionId) {
@@ -536,7 +564,7 @@
                 scope.hidePentahoReport = true;
                 scope.formData.outputType = 'PDF';
                 scope.baseURL = $rootScope.hostUrl + API_VERSION + "/runreports/" + encodeURIComponent("Loan Transaction Receipt");
-                scope.baseURL += "?output-type=" + encodeURIComponent(scope.formData.outputType) + "&tenantIdentifier=" + $rootScope.tenantIdentifier+"&locale="+scope.optlang.code;
+                scope.baseURL += "?output-type=" + encodeURIComponent(scope.formData.outputType) + "&tenantIdentifier=" + $rootScope.tenantIdentifier + "&locale=" + scope.optlang.code;
 
                 var reportParams = "";
                 var paramName = "R_transactionId";
@@ -548,16 +576,26 @@
                 scope.viewReportDetails = $sce.trustAsResourceUrl(scope.baseURL);
 
             };
-             scope.viewloantransactionjournalentries = function(transactionId){
+            scope.viewloantransactionjournalentries = function (transactionId) {
                 var transactionId = "L" + transactionId;
-                 if(scope.loandetails.clientId != null && scope.loandetails.clientId != ""){
-                     location.path('/viewtransactions/' + transactionId).search({productName: scope.loandetails.loanProductName,loanId:scope.loandetails.id,clientId: scope.loandetails.clientId,
-                         accountNo: scope.loandetails.accountNo,clientName: scope.loandetails.clientName});
-                 }else{
-                     location.path('/viewtransactions/' + transactionId).search({productName: scope.loandetails.loanProductName,loanId:scope.loandetails.id,accountNo: scope.loandetails.accountNo,
-                         groupId :scope.loandetails.group.id,groupName :scope.loandetails.group.name});
+                if (scope.loandetails.clientId != null && scope.loandetails.clientId != "") {
+                    location.path('/viewtransactions/' + transactionId).search({
+                        productName: scope.loandetails.loanProductName,
+                        loanId: scope.loandetails.id,
+                        clientId: scope.loandetails.clientId,
+                        accountNo: scope.loandetails.accountNo,
+                        clientName: scope.loandetails.clientName
+                    });
+                } else {
+                    location.path('/viewtransactions/' + transactionId).search({
+                        productName: scope.loandetails.loanProductName,
+                        loanId: scope.loandetails.id,
+                        accountNo: scope.loandetails.accountNo,
+                        groupId: scope.loandetails.group.id,
+                        groupName: scope.loandetails.group.name
+                    });
 
-                 }
+                }
 
             };
 
@@ -567,13 +605,20 @@
             }
 
             scope.deleteAll = function (apptableName, entityId) {
-                resourceFactory.DataTablesResource.delete({datatablename: apptableName, entityId: entityId, genericResultSet: 'true'}, {}, function (data) {
+                resourceFactory.DataTablesResource.delete({
+                    datatablename: apptableName,
+                    entityId: entityId,
+                    genericResultSet: 'true'
+                }, {}, function (data) {
                     route.reload();
                 });
             };
 
             scope.deleteDocument = function (documentId, index) {
-                resourceFactory.LoanDocumentResource.delete({loanId: scope.loandetails.id, documentId: documentId}, '', function (data) {
+                resourceFactory.LoanDocumentResource.delete({
+                    loanId: scope.loandetails.id,
+                    documentId: documentId
+                }, '', function (data) {
                     scope.loandocuments.splice(index, 1);
                 });
             };
@@ -581,12 +626,12 @@
             scope.downloadDocument = function (documentId) {
 
             };
-            
+
             scope.transactionSort = {
                 column: 'date',
                 descending: true
-            };    
-            scope.changeTransactionSort = function(column) {
+            };
+            scope.changeTransactionSort = function (column) {
                 var sort = scope.transactionSort;
                 if (sort.column == column) {
                     sort.descending = !sort.descending;
@@ -596,9 +641,9 @@
                 }
             };
 
-            scope.showEdit = function(disbursementDetail){
-                if((!disbursementDetail.actualDisbursementDate || disbursementDetail.actualDisbursementDate == null)
-                    && scope.status =='Approved'){
+            scope.showEdit = function (disbursementDetail) {
+                if ((!disbursementDetail.actualDisbursementDate || disbursementDetail.actualDisbursementDate == null)
+                    && scope.status == 'Approved') {
                     return true;
                 }
                 return false;
@@ -610,47 +655,157 @@
                 }
                 return true;
             };
-            scope.showDisbursedAmountBasedOnStatus = function(){
-              if(scope.status == 'Submitted and pending approval' ||scope.status == 'Withdrawn by applicant' || scope.status == 'Rejected' ||
-                scope.status == 'Approved'){
-                  return false;
-              }
-              return true;
+            scope.showDisbursedAmountBasedOnStatus = function () {
+                if (scope.status == 'Submitted and pending approval' || scope.status == 'Withdrawn by applicant' || scope.status == 'Rejected' ||
+                    scope.status == 'Approved') {
+                    return false;
+                }
+                return true;
             };
 
-            scope.checkStatus = function(){
-                if(scope.status == 'Active' || scope.status == 'Closed (obligations met)' || scope.status == 'Overpaid' ||
-                    scope.status == 'Closed (rescheduled)' || scope.status == 'Closed (written off)'){
+            scope.checkStatus = function () {
+                if (scope.status == 'Active' || scope.status == 'Closed (obligations met)' || scope.status == 'Overpaid' ||
+                    scope.status == 'Closed (rescheduled)' || scope.status == 'Closed (written off)') {
                     return true;
                 }
                 return false;
             };
 
-            scope.showAddDeleteTrancheButtons = function(action){
+            scope.showAddDeleteTrancheButtons = function (action) {
                 scope.return = true;
-                if(scope.status == 'Closed (obligations met)' || scope.status == 'Overpaid' ||
+                if (scope.status == 'Closed (obligations met)' || scope.status == 'Overpaid' ||
                     scope.status == 'Closed (rescheduled)' || scope.status == 'Closed (written off)' ||
-                    scope.status =='Submitted and pending approval'){
+                    scope.status == 'Submitted and pending approval') {
                     scope.return = false;
                 }
                 scope.totalDisbursedAmount = 0;
                 scope.count = 0;
-                for(var i in scope.loandetails.disbursementDetails){
-                    if(scope.loandetails.disbursementDetails[i].actualDisbursementDate != null){
+                for (var i in scope.loandetails.disbursementDetails) {
+                    if (scope.loandetails.disbursementDetails[i].actualDisbursementDate != null) {
                         scope.totalDisbursedAmount += scope.loandetails.disbursementDetails[i].principal;
                     }
-                    else{
-                        scope.count +=  1;
+                    else {
+                        scope.count += 1;
                     }
                 }
-                if(scope.totalDisbursedAmount == scope.loandetails.approvedPrincipal || scope.return == false){
+                if (scope.totalDisbursedAmount == scope.loandetails.approvedPrincipal || scope.return == false) {
                     return false;
                 }
-                if(scope.count == 0 && action == 'deletedisbursedetails'){
+                if (scope.count == 0 && action == 'deletedisbursedetails') {
                     return false;
                 }
 
                 return true;
+            };
+
+
+
+            // this code for investment from loan side to adding the loan to perticular saving investment
+
+
+            scope.formDate = {};
+            scope.groups = [];
+            scope.names = [];
+            scope.loans = [];
+            resourceFactory.groupResource.getAllGroups(function (data) {
+                scope.groups = data;
+
+            });
+
+            scope.gotoBack = function () {
+                scope.showAddInvestment = true;
+            };
+
+
+            scope.selectSaving = function (id) {
+                scope.loan = [];
+                resourceFactory.groupAccountResource.get({groupId: scope.formData.id}, function (data) {
+
+                    if (data.savingsAccounts) {
+                        scope.names = data.savingsAccounts;
+                        for (var i = 0; i < scope.names.length; i++) {
+                            scope.name = scope.names[i].productName;
+                            scope.acno = scope.names[i].accountNo;
+                            scope.fullname = scope.acno + '-' + scope.name;
+                            scope.loan.push({productName: scope.fullname, Id: scope.names[i].id});
+                        }
+                    }
+                    else {
+                        scope.names = null;
+                        scope.loans = null;
+                    }
+                    scope.loans = scope.loan;
+                });
+            };
+
+            scope.loanData = [];
+            scope.loanInvestment = [];
+            resourceFactory.loanInvestmentResource.get({loanId: routeParams.id}, function (data) {
+                scope.loanInvestment = data;
+
+            });
+
+            scope.addInvestment = function (Id) {
+
+                resourceFactory.savingsResource.get({
+                    accountId: scope.formData.Id,
+                    associations: 'all'
+                }, function (data) {
+                    scope.savingData = data;
+                    if (scope.loanInvestment.length == 0) {
+                        scope.loanInvestment.push({
+                            name: scope.savingData.groupName,
+                            productname: scope.savingData.savingsProductName,
+                            accountno: scope.savingData.accountNo,
+                            savingamount: scope.savingData.summary.accountBalance,
+                            saving_id: scope.savingData.id,
+                            investedAmount: scope.formData.investedAmount
+                        });
+                    }
+
+                    else {
+                        var count = 0;
+                        for (var i = 0; i < scope.loanInvestment.length; i++) {
+
+                            if (scope.loanInvestment[i].saving_id == scope.savingData.id) {
+                                count++;
+                                alert(" Loan Account Already Added ....! ");
+                            }
+                        }
+
+                        if (count == 0) {
+                            scope.loanInvestment.push({
+                                name: scope.savingData.groupName,
+                                productname: scope.savingData.savingsProductName,
+                                accountno: scope.savingData.accountNo,
+                                savingamount: scope.savingData.summary.accountBalance,
+                                saving_id: scope.savingData.id,
+                                investedAmount: scope.formData.investedAmount
+
+                            });
+                        }
+                    }
+                });
+            };
+
+
+            scope.submitData = function () {
+
+                scope.savingId = [];
+                scope.investedAmounts = [];
+
+                for (var i = 0; i < scope.loanInvestment.length; i++) {
+                    scope.savingId.push(scope.loanInvestment[i].saving_id);
+                    scope.investedAmounts.push(scope.loanInvestment[i].investedAmount);
+                }
+                scope.loanId = routeParams.id;
+                resourceFactory.loanInvestmentResource.save({
+                    savingId: this.savingId,
+                    loanId: this.loanId,
+                    investedAmounts: this.investedAmounts
+                }, function (data) {
+                    scope.showAddInvestment = true;
+                });
             };
         }
     });

@@ -2,7 +2,6 @@
     mifosX.controllers = _.extend(module, {
         AddLoanInvestmentController: function (scope, location, resourceFactory, routeParams, route) {
             scope.formData = {};
-
             scope.groups = [];
             scope.names = [];
             scope.loans = [];
@@ -51,7 +50,8 @@
                     if(scope.loanInvestment.length==0) {
                         scope.loanInvestment.push({
                             name: scope.savingData.groupName, productname: scope.savingData.savingsProductName,
-                            accountno: scope.savingData.accountNo, savingamount: scope.savingData.summary.accountBalance,  saving_id : scope.savingData.id
+                            accountno: scope.savingData.accountNo, savingamount: scope.savingData.summary.accountBalance,  saving_id : scope.savingData.id,
+                            investedAmount : scope.formData.investedAmount
                         });
                     }
 
@@ -68,7 +68,9 @@
                         if(count == 0){
                             scope.loanInvestment.push({
                                 name: scope.savingData.groupName, productname: scope.savingData.savingsProductName,
-                                accountno: scope.savingData.accountNo, savingamount: scope.savingData.summary.accountBalance, saving_id: scope.savingData.id
+                                accountno: scope.savingData.accountNo, savingamount: scope.savingData.summary.accountBalance, saving_id: scope.savingData.id,
+                                investedAmount : scope.formData.investedAmount
+
                             });
                         }
                     }
@@ -79,11 +81,13 @@
             scope.submitData = function(){
 
                 scope.savingId = [];
+                scope.investedAmounts = [];
                 for(var i =0 ; i<scope.loanInvestment.length; i++){
                     scope.savingId.push(scope.loanInvestment[i].saving_id);
+                    scope.investedAmounts.push(scope.loanInvestment[i].investedAmount);
                 }
                 scope.loanId = routeParams.id;
-                resourceFactory.loanInvestmentResource.save( {savingId: this.savingId, loanId: this.loanId}, function (data) {
+                resourceFactory.loanInvestmentResource.save( {savingId: this.savingId, loanId: this.loanId, investedAmounts : this.investedAmounts}, function (data) {
                     location.path('/viewloanaccount/' + routeParams.id);
                 });
             };

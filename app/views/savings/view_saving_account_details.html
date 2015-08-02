@@ -345,6 +345,7 @@
 
                 <tab heading="Investment"  has-permission="CREATE_SAVINGINVESTMENT">
 
+                    <div ng-show="showAddInvestment">
                         <div has-permission="CREATE_SAVINGINVESTMENT">
                             <button class="btn btn-primary pull-right" ng-click="routeToAddInvestment()"><i class="icon-plus icon-white"></i> {{'label.button.addinvestment' | translate}}</button>
                         </div>
@@ -357,6 +358,7 @@
                                 <th> {{'label.heading.loanproductname' | translate}}</th>
                                 <th> {{'label.heading.loanaccountno' | translate}}</th>
                                 <th> {{'label.heading.loanamount' | translate}}</th>
+                                <th>  Invested Amount</th>
                                 <th> {{'label.heading.deleteinvestment' | translate}}</th>
 
                             </tr>
@@ -368,6 +370,7 @@
                                 <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)"> {{loan.productname}}</td>
                                 <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)">{{loan.accountno}}</td>
                                 <td class="pointer" data-ng-click="routeToLoan(loan.loan_id)"> {{loan.loanammount}}</td>
+                                <td class="pointer" data-ng-click="routeToLoan(loan.loan_id"> {{ loan.investedAmount}}</td>
                                 <td>
                                     <a class="btn btn-danger" data-ng-click="routeToDelete(loan.loan_id)"><i class="icon-trash "></i></a>
 
@@ -377,6 +380,72 @@
                         </table>
 
                     </br>
+
+                    </div>
+
+                    <div ng-show="showAddInvestment == false">
+
+                        <form name="createinvestmentform" novalidate="" class="form-horizontal well" rc-submit="submit()">
+                            <api-validate></api-validate>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <select chosen="clients" id="id" ng-model="formData.id"  class="form-control"
+                                                ng-change="selectLoans(formData.id)"
+                                                ng-options="client.id as client.displayName for client in clients" value="{{client.id}}">
+                                            <option value="">-- Select Client --</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                         <select chosen="loans" ng-model="formData.Id"  class="form-control"
+                                                 ng-options="ln.Id as ln.productName for ln in loans" value="{{ln.Id}}">
+                                                 <option value="">--Select Loan --</option>
+                                         </select>
+                                    </div>
+                                    <label class="control-label col-sm-2">Investment Amount </label>
+                                    <div class="col-sm-2">
+                                        <input type="text" id="investedAmount" name="investedAmount" ng-model="formData.investedAmount"  class="form-control"/>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <a class="btn bg-primary" ng-click='addInvestment(formData.Id)'><i class="icon-plus"></i></a>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <table class="table " style="table-layout: fixed;">
+                                        <thead>
+                                        <tr class="graybg">
+                                            <th> {{'label.heading.clientname' | translate}}</th>
+                                            <th> {{'label.heading.loanproductname' | translate}}</th>
+                                            <th> {{'label.heading.loanaccountno' | translate}}</th>
+                                            <th> {{'label.heading.loanamount' | translate}}</th>
+                                            <th> Invested Amount </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="investment in savingInvestment">
+                                            <td>{{investment.name}}</td>
+                                            <td> {{investment.productname}}</td>
+                                            <td>{{investment.accountno}}</td>
+                                            <td> {{investment.loanammount}}</td>
+                                            <td>  {{investment.investedAmount}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-offset-5">
+                                    <button class="btn btn-primary" ng-click="gotoBack()"> {{'label.button.cancel' | translate}}</button>
+                                    <button id="save" type="submit" ng-click="submitData()" class="btn btn-primary"  ng-hide="blockUI"> Save</button>
+                                    <button class="btn btn-info" ng-show="blockUI"><strong>{{'label.button.processing' | translate}}</strong></button>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                    </div>
+
 
                 </tab>
 

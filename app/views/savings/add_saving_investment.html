@@ -4,7 +4,6 @@
     <form name="createinvestmentform" novalidate="" class="form-horizontal well" rc-submit="submit()">
         <api-validate></api-validate>
         <fieldset>
-            <legend>Investment Mapping </legend>
             <div class="form-group">
                 <label class="control-label col-sm-2">{{'label.heading.clientname' | translate}}</label>
                 <div class="col-sm-3">
@@ -23,6 +22,13 @@
                         <option value="">--Select Loans --</option>
                     </select>
                 </div>
+
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm2">Add Investment Amount </label>
+                <div class="col-sm-3">
+                    <input type="text" id="investedAmount" name="investedAmount" ng-model="formData.investedAmount"  class="form-control"/>
+                </div>
                 <div class="col-md-1">
                     <a class="btn bg-primary" ng-click='addInvestment(formData.Id)'><i class="icon-plus"></i></a>
                 </div>
@@ -36,6 +42,7 @@
                            <th> {{'label.heading.loanproductname' | translate}}</th>
                            <th> {{'label.heading.loanaccountno' | translate}}</th>
                            <th> {{'label.heading.loanamount' | translate}}</th>
+                            <th> Invested Amount </th>
                          </tr>
                     </thead>
                     <tbody>
