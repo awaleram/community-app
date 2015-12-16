@@ -165,7 +165,18 @@
                             var actionFlag = false;
                         }
                         scope.charges[i].actionFlag = actionFlag;
+
+                        if(scope.charges[i].chargeTimeType.value == 'Loan Application Fee'){
+                            var allowToPayCharge = true;
+                        }else if(scope.status == "Active"){
+                            var allowToPayCharge = true;
+                        }else{
+                            var allowToPayCharge = false;
+                        }
+                        scope.charges[i].allowToPayCharge = allowToPayCharge;
                     }
+
+
 
                     scope.chargeTableShow = true;
                 }

@@ -741,7 +741,7 @@
                                     <a class="btn-primary" data-ng-hide="charge.actionFlag"
                                        href="#/loanaccountcharge/{{loandetails.id}}/waivecharge/{{charge.id}}"><i
                                             class="icon-flag icon-white"></i></a>
-                                    <a class="btn-success" data-ng-show="charge.chargePayable && status=='Active'"
+                                    <a class="btn-success" data-ng-show="charge.allowToPayCharge"
                                        href="#/loanaccountcharge/{{loandetails.id}}/paycharge/{{charge.id}}">{{"label.button.pay" |
                                         translate}}</a>
                                 </td>
