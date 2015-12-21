@@ -166,7 +166,7 @@
                         }
                         scope.charges[i].actionFlag = actionFlag;
 
-                        if(scope.charges[i].chargeTimeType.value == 'Loan Application Fee'){
+                        if(scope.charges[i].chargeTimeType.value == 'Loan Application Fee' && scope.charges[i].paid == false){
                             var allowToPayCharge = true;
                         }else if(scope.status == "Active"){
                             var allowToPayCharge = true;
