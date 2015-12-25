@@ -42,9 +42,18 @@
                     }),
                     clientResource: defineResource(apiVer + "/clients/:clientId/:anotherresource", {clientId: '@clientId', anotherresource: '@anotherresource'}, {
                         getAllClients: {method: 'GET', params: {limit: 1000}},
+                        getAllClientsWithoutLimit: {method: 'GET', params: {}},
                         getClientClosureReasons: {method: 'GET', params: {}},
                         getAllClientDocuments: {method: 'GET', params: {}, isArray: true},
                         update: { method: 'PUT'}
+                    }),
+                    clientChargesResource: defineResource(apiVer + "/clients/:clientId/charges/:resourceType", {clientId: '@clientId', resourceType: '@resourceType'}, {
+                        getCharges: {method: 'GET'},
+                        waive:{method:'POST' , params:{command : 'waive'}}
+                    }),
+                    clientTransactionResource: defineResource(apiVer + "/clients/:clientId/transactions/:transactionId", {clientId: '@clientId', transactionId: '@transactionId'}, {
+                        getTransactions: {method: 'GET',isArray: true},
+                        undoTransaction :{method:'POST', params:{command:'undo'}}
                     }),
                     clientIdentifierResource: defineResource(apiVer + "/client_identifiers/:clientIdentityId/documents", {clientIdentityId: '@clientIdentityId'}, {
                         get: {method: 'GET', params: {}, isArray: true}
@@ -178,6 +187,9 @@
                         getLoanAccountDetails: {method: 'GET', params: {}},
                         update: {method: 'PUT'}
                     }),
+                    LoanAddTranchesResource: defineResource(apiVer + "/loans/:loanId/disbursements/editDisbursements", {loanId: '@loanId'}, {
+                        update: {method: 'PUT'}
+                    }),
                     LoanDocumentResource: defineResource(apiVer + "/loans/:loanId/documents/:documentId", {loanId: '@loanId', documentId: '@documentId'}, {
                         getLoanDocuments: {method: 'GET', params: {}, isArray: true}
                     }),
@@ -197,18 +209,19 @@
                         getAllEmployees: {method: 'GET', params: {}, isArray: true},
                         update: { method: 'PUT' }
                     }),
-                    globalSearch: defineResource(apiVer + "/search", {query: '@query'}, {
+                    globalSearch: defineResource(apiVer + "/search", {query: '@query', resource: '@resource'}, {
                         search: { method: 'GET',
-                            params: { query: '@query'},
+                            params: { query: '@query' , resource: '@resource'},
                             isArray: true
                         }
                     }),
                     globalSearchTemplateResource: defineResource(apiVer + "/search/template", {}, {
                         get: {method: 'GET', params: {}}
                     }),
-                    globalAdHocSearchResource: defineResource(apiVer + "/search/advance", {}, {
+                    globalAdHocSearchResource: defineResource(apiVer + "/search/advance/", {}, {
                         get: {method: 'GET', params: {}},
-                        search: { method: 'POST', isArray: true }
+                        search: { method: 'POST', isArray: true },
+                        getClientDetails : {method: 'POST', params: {clientInfo: true},isArray: true}
                     }),
                     fundsResource: defineResource(apiVer + "/funds/:fundId", {fundId: '@fundId'}, {
                         getAllFunds: {method: 'GET', params: {}, isArray: true},
@@ -243,6 +256,9 @@
                     periodicAccrualAccountingResource: defineResource(apiVer + "/runaccruals", {}, {
                         run: {method: 'POST', params: {}}
                     }),
+                    officeOpeningResource: defineResource(apiVer + "/journalentries/openingbalance", {}, {
+                        get: {method: 'GET', params: {}}
+                    }),
                     codeResources: defineResource(apiVer + "/codes/:codeId", {codeId: "@codeId"}, {
                         getAllCodes: {method: 'GET', params: {}, isArray: true},
                         update: { method: 'PUT', params: {} }
@@ -258,6 +274,16 @@
                     }),
 					hookTemplateResource: defineResource(apiVer + "/hooks/template", {}, {
                         get: {method: 'GET', params: {}}
+                    }),
+                    entityToEntityResource: defineResource(apiVer + "/entitytoentitymapping/:mappingId/:fromId/:toId", {mappingId: '@mappingId'}, {
+                        getAllEntityMapping: {method: 'GET', params: {}, isArray: true},
+                        getEntityMapValues: {method: 'GET', params: {}}
+                    }),
+                    entityMappingResource: defineResource(apiVer + "/entitytoentitymapping/:mapId", {mappingId: '@mappingId'}, {
+                        getAllEntityMapping: {method: 'GET', params: {}, isArray: true},
+                        getEntityMapValues: {method: 'GET', params: {}, isArray: true},
+                        update: { method: 'PUT', params: {}},
+                        delete:{method:'DELETE',params:{}}
                     }),
                     accountNumberResources: defineResource(apiVer + "/accountnumberformats/:accountNumberFormatId",{accountNumberFormatId: '@accountNumberFormatId'}, {
                         get:{method:'GET',params:{accountNumberFormatId:'@accountNumberFormatId'}},
@@ -389,7 +415,15 @@
                     loanReassignmentResource: defineResource(apiVer + "/loans/loanreassignment/:templateSource", {templateSource: '@templateSource'}, {
                         get: {method: 'GET', params: {}}
                     }),
-                    auditResource: defineResource(apiVer + "/audits/:templateResource", {templateResource: '@templateResource'}, {
+                    loanRescheduleResource: defineResource(apiVer + "/rescheduleloans/:scheduleId",{scheduleId:'@scheduleId'},{
+                     get: {method: 'GET',params:{}},
+                     template: {method: 'GET',params:{}},
+                     preview:{method:'GET',params:{command:'previewLoanReschedule'}},
+                     put: {method: 'POST', params: {command:'reschedule'}},
+                     reject:{method:'POST',params:{command:'reject'}},
+                     approve:{method:'POST',params:{command:'approve'}}
+                     }),
+                     auditResource: defineResource(apiVer + "/audits/:templateResource", {templateResource: '@templateResource'}, {
                         get: {method: 'GET', params: {}},
                         search: {method: 'GET', params: {}, isArray: false}
                     }),
@@ -421,10 +455,13 @@
                     tellerResource: defineResource(apiVer + "/tellers/:tellerId", {tellerId: "@tellerId"}, {
                         getAllTellers: {method: 'GET', params: {}, isArray: true},
                         get: {method: 'GET', params: {tellerId: '@tellerId'}},
-                        update: { method: 'PUT', params: {tellerId: '@tellerId'}}
+                        update: { method: 'PUT', params: {tellerId: '@tellerId'}},
+                        delete: { method: 'DELETE', params: {tellerId: '@tellerId'}}
                     }),
                     tellerCashierResource: defineResource(apiVer + "/tellers/:tellerId/cashiers/:cashierId", {tellerId: "@tellerId", cashierId: "@cashierId"}, {
                         getAllCashiersForTeller: {method: 'GET', params: {tellerId: "@tellerId"}, isArray: false},
+                        getCashier: {method: 'GET', params:{tellerId: "@tellerId", cashierId: "@cashierId"}},
+                        update: { method: 'PUT', params: {tellerId: "@tellerId", cashierId: "@cashierId"}},
                         delete: { method: 'DELETE', params: {tellerId: "@tellerId", cashierId: "@cashierId"}}
                     }),
                     tellerCashierTemplateResource: defineResource(apiVer + "/tellers/:tellerId/cashiers/template", {tellerId: "@tellerId"}, {
@@ -444,6 +481,78 @@
                     }),
                     cashierTxnTemplateResource: defineResource(apiVer + "/tellers/:tellerId/cashiers/:cashierId/transactions/template", {tellerId: "@tellerId", cashierId: "@cashierId"}, {
                         get: {method: 'GET', params: {tellerId: "@tellerId", cashierId: "@cashierId"}, isArray: false}
+                    }),
+                    collectionSheetResource: defineResource(apiVer + "/collectionsheet", {}, {
+                    }),
+                    workingDaysResource: defineResource(apiVer + "/workingdays", {}, {
+                        get: {method: 'GET', params: {}},
+                        put: {method: 'PUT', params:{}}
+                    }),
+                    workingDaysResourceTemplate: defineResource(apiVer + "/workingdays/template", {}, {
+                       get: {method: 'GET', params: {}}
+                    }),
+                    passwordPrefTemplateResource: defineResource(apiVer + "/passwordpreferences/template", {}, {
+                        get: {method: 'GET', params: {}, isArray : true},
+                        put: {method: 'PUT', params:{}}
+                    }),
+                    passwordPrefResource : defineResource(apiVer + "/passwordpreferences", {}, {
+                        put: {method: 'PUT', params:{}}
+                    }),
+                    paymentTypeResource: defineResource(apiVer + "/paymenttypes/:paymentTypeId", {paymentTypeId: "@paymentTypeId"}, {
+                        getAll: {method: 'GET', params: {}, isArray: true},
+                        get: {method: 'GET' , params: {paymentTypeId: '@paymentTypeId'}},
+                        update: {method: 'PUT', params: {paymentTypeId: '@paymentTypeId'}}
+                    }),
+                    externalServicesS3Resource: defineResource(apiVer + "/externalservice/S3", {},{
+                        get: {method: 'GET', params: {}, isArray : true},
+                        put: {method: 'PUT', params:{}}
+                    }),
+                    externalServicesSMTPResource: defineResource(apiVer + "/externalservice/SMTP", {},{
+                        get: {method: 'GET', params: {}, isArray : true},
+                        put: {method: 'PUT', params:{}}
+                    }),
+                    externalServicesResource: defineResource(apiVer + "/externalservice/:id", {id: '@id'},{
+                        get: {method: 'GET', params: {}, isArray : true},
+                        put: {method: 'PUT', params:{}}
+                    }),
+                    provisioningcriteria: defineResource(apiVer + "/provisioningcriteria/:criteriaId",{criteriaId:'@criteriaId'},{
+                        get: {method: 'GET',params:{}},
+                        getAll: {method: 'GET',params:{}, isArray : true},
+                        template: {method: 'GET',params:{}},
+                        post:{method:'POST',params:{}},
+                        put: {method: 'PUT', params: {}}
+                    }),
+                    provisioningentries: defineResource(apiVer + "/provisioningentries/:entryId",{entryId:'@entryId'},{
+                        get: {method: 'GET',params:{}},
+                        getAll: {method: 'GET',params:{}},
+                        template: {method: 'GET',params:{}},
+                        post:{method:'POST',params:{}},
+                        put: {method: 'PUT', params: {}},
+                        createJournals:{method:'POST', params:{command : 'createjournalentry'}},
+                        reCreateProvisioningEntries:{method:'POST', params:{command : 'recreateprovisioningentry'}},
+                        getJournals: {method: 'GET', params: {entryId: '@entryId'}}
+                    }),
+                    provisioningjournals: defineResource(apiVer + "/journalentries/provisioning", {}, {
+                        get: {method: 'GET', params: {}}
+                    }),
+                    provisioningentriesSearch: defineResource(apiVer + "/provisioningentries/entries", {}, {
+                        get: {method: 'GET', params: {}}
+                    }),
+
+                    provisioningcategory: defineResource(apiVer + "/provisioningcategory", {}, {
+                        getAll: {method: 'GET', params: {}, isArray : true}
+                    }),
+
+                    floatingrates: defineResource(apiVer + "/floatingrates/:floatingRateId",{floatingRateId:'@floatingRateId'},{
+                        get: {method: 'GET',params:{}},
+                        getAll: {method: 'GET',params:{}, isArray : true},
+                        post:{method:'POST',params:{}},
+                        put: {method: 'PUT', params: {}}
+                    }),
+                    variableinstallments: defineResource(apiVer + "/loans/:loanId/schedule",{loanId:'@loanId'},{
+                        validate:{method:'POST',params:{command: 'calculateLoanSchedule'}},
+                        addVariations:{method:'POST',params:{command: 'addVariations'}},
+                        deleteVariations:{method:'POST',params:{command: 'deleteVariations'}}
                     })
                 };
             }];

@@ -25,6 +25,11 @@
                 scope.formData.transferAmount = data.transferAmount;
             });
 
+            scope.changeClient = function (client) {
+                scope.formData.toClientId = client.id;
+                scope.changeEvent();
+            };
+
             scope.changeEvent = function () {
 
                 var params = scope.formData;
@@ -43,7 +48,7 @@
             };
 
             scope.submit = function () {
-                this.formData.locale = "en";
+                this.formData.locale = scope.optlang.code;
                 this.formData.dateFormat = scope.df;
                 if (this.formData.transferDate) this.formData.transferDate = dateFilter(this.formData.transferDate, scope.df);
                 this.formData.fromClientId = scope.transfer.fromClient.id;

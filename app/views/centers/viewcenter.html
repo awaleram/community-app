@@ -12,8 +12,8 @@
 	        	<i class="icon-map-marker"></i>
 	            <strong>{{center.name}} </strong>
 	            <small>
-	            	<i class="icon-barcode"></i> {{ 'label.uniquelyidentifiedwithid' | translate }} {{center.id}} | 
-	            	<i class="icon-building"></i> {{ 'label.heading.office' | translate }} "{{center.officeName}}
+	            	<i class="icon-barcode"></i> {{ 'label.heading.accnum' | translate }}: {{center.accountNo}} |
+	            	<i class="icon-building"></i> {{ 'label.heading.office' | translate }}: "{{center.officeName}}"
 	            </small>
 	        </h3>
 	    </div>
@@ -41,7 +41,7 @@
             </div>
 	</script>
 	<div>
-		<tabset>
+		<tabset tabset-name="centerTabset">
 			<tab heading="{{ 'label.heading.general' | translate }}">
 			    <div>
 			        <div class="col-md-12 primarydiv" data-ng-hide="center.status.value == 'Closed'">
@@ -64,7 +64,7 @@
 			                         <li>
                                           <a href="#/centerattendance?centerId={{center.id}}&calendarId={{meeting.id}}"
                                               data-ng-show="center.collectionMeetingCalendar" has-permission='SAVEORUPDATEATTENDANCE_MEETING'>{{
-				                                  'label.button.attendance' | translate }}</a>  			                        
+				                                  'label.button.attendance' | translate }}</a>
 			                         </li>
 			                          <li>
 			                              <a href="#/assignstaff/{{center.id}}/centers" data-ng-hide="center.staffId" has-permission='ASSIGNSTAFF_GROUP'>{{
@@ -84,6 +84,10 @@
 			                          <li data-ng-show="center.status.value=='Active'">
 			                              <a href="#/attachmeeting/{{center.id}}/centers" data-ng-hide="center.collectionMeetingCalendar" has-permission='CREATE_MEETING'>{{ 'label.button.attachmeeting' | translate }}</a>
 			                          </li>
+
+									  <li>
+										<a ng-click= "viewStaffAssignmentHistory()" has-permission='READ_Staff Assignment History'>{{ 'label.button.staffassignmenthistory' | translate }}</a>
+									  </li>
 			                      </ul>
 			                  </span>
 			            </div>
@@ -111,6 +115,7 @@
 											</div>
 									    </div>
 				                	</div>
+
 				                	<div class="col-md-6 meeting">
 				                		<div class="alert alert-warning" role="alert">
 							                <table>
@@ -134,6 +139,7 @@
 						                </div>
 				                	</div>
 				                </div>
+
 				                <div data-ng-show="accounts.savingsAccounts">
 						            <div class="span gray-head">
 						                  <span class="boldlabel">
@@ -212,7 +218,7 @@
 						                    </tr>
 						                </table>
 						                <h4><strong>{{ 'label.heading.summary' | translate }}</strong></h4>
-								        <table class="table-minified">    
+								        <table class="table-minified">
 								            <tr>
 						                        <th>{{ 'label.numofactiveclient' | translate }}</th>
 						                        <td><span class="padded-td">{{summary.activeClients}}</span></td>
@@ -223,7 +229,7 @@
 						                    </tr>
 						                    <tr>
 						                        <th>{{ 'label.numofactiveclientloans' | translate }}</th>
-						                        <td><span class="padded-td">{{summary.activeGroupLoans}}</span></td>
+						                        <td><span class="padded-td">{{summary.activeClientLoans}}</span></td>
 						                    </tr>
 						                    <tr>
 						                        <th>{{ 'label.numofactivegroupborrowers' | translate }}</th>
@@ -252,13 +258,13 @@
 			</tab>
 			<tab heading="{{ 'label.heading.notes' | translate }}" has-permission='READ_GROUPNOTE'>
 			    <br/>
-			
+
 			    <form>
 			        <div class="form-group">
 			            <div class="col-sm-12 col-md-12">
 			                <textarea rows="1" class="form-control marginbottom0px" id="textarea"
 			                          placeholder="{{ 'label.input.enternote' | translate }}" ng-model="formData.note"></textarea>
-			
+
 			                <div class="notewrapper col-md-12">
 			                        <span class="pull-right noteaddbuttonwrapper">
 			                            <button class="btn btn-primary" type="submit" ng-click="saveNote()" has-permission='CREATE_GROUPNOTE'>{{ 'label.button.add' | translate }} </button>
@@ -299,6 +305,7 @@
 		    </div>
 		    <br>
 		    <br>
+
 		    <div data-ng-show="datatabledetails.isData">
 		        <table class="table" data-ng-show="datatabledetails.isMultirow">
 		            <thead>
@@ -319,6 +326,9 @@
 		    </div>
 		</tab>
 		</tabset>
+		<div id="printcontent" class="autowidth">
+			<span class="pull-left"><iframe id="rptLoadingFrame" ng-src="{{baseURL}}" frameborder="0" width="400%" height="800px"></iframe></span>
+		</div>
 	</div>
 </div>
 

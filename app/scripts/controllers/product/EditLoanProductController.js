@@ -4,6 +4,7 @@
             scope.formData = {};
             scope.restrictDate = new Date();
             scope.charges = [];
+            scope.loanProductConfigurableAttributes = [];
             scope.showOrHideValue = "show";
             scope.configureFundOptions = [];
             scope.specificIncomeAccountMapping = [];
@@ -70,6 +71,7 @@
                     graceOnInterestCharged: scope.product.graceOnInterestCharged,
                     graceOnArrearsAgeing: scope.product.graceOnArrearsAgeing,
                     overdueDaysForNPA: scope.product.overdueDaysForNPA,
+                    accountMovesOutOfNPAOnlyOnArrearsCompletion: scope.product.accountMovesOutOfNPAOnlyOnArrearsCompletion,
                     accountingRule: scope.product.accountingRule.id,
                     principalVariationsForBorrowerCycle: [],
                     interestRateVariationsForBorrowerCycle: [],
@@ -81,7 +83,10 @@
                     daysInMonthType: scope.product.daysInMonthType.id,
                     isInterestRecalculationEnabled: scope.product.isInterestRecalculationEnabled,
                     holdGuaranteeFunds:scope.product.holdGuaranteeFunds,
-                    minimumDaysBetweenDisbursalAndFirstRepayment: scope.product.minimumDaysBetweenDisbursalAndFirstRepayment
+                    minimumDaysBetweenDisbursalAndFirstRepayment: scope.product.minimumDaysBetweenDisbursalAndFirstRepayment,
+                    principalThresholdForLastInstallment: scope.product.principalThresholdForLastInstallment,
+                    installmentAmountInMultiplesOf: scope.product.installmentAmountInMultiplesOf,
+                    canDefineInstallmentAmount : scope.product.canDefineInstallmentAmount
                 };
 
                 if (scope.product.isInterestRecalculationEnabled) {
@@ -89,9 +94,35 @@
                     scope.formData.rescheduleStrategyMethod = scope.product.interestRecalculationData.rescheduleStrategyType.id;
                     scope.formData.recalculationRestFrequencyType = scope.product.interestRecalculationData.recalculationRestFrequencyType.id;
                     scope.formData.recalculationRestFrequencyInterval = scope.product.interestRecalculationData.recalculationRestFrequencyInterval;
+                    scope.formData.isArrearsBasedOnOriginalSchedule = scope.product.interestRecalculationData.isArrearsBasedOnOriginalSchedule;
+                    scope.formData.preClosureInterestCalculationStrategy = scope.product.interestRecalculationData.preClosureInterestCalculationStrategy.id;
                     if (scope.product.interestRecalculationData.recalculationRestFrequencyDate) {
                         scope.date.recalculationRestFrequencyDate = new Date(scope.product.interestRecalculationData.recalculationRestFrequencyDate);
                     }
+                    if(scope.formData.interestRecalculationCompoundingMethod != 0){
+                        scope.formData.recalculationCompoundingFrequencyType = scope.product.interestRecalculationData.recalculationCompoundingFrequencyType.id;
+                        scope.formData.recalculationCompoundingFrequencyInterval = scope.product.interestRecalculationData.recalculationCompoundingFrequencyInterval;
+                        scope.date.recalculationCompoundingFrequencyDate = new Date(scope.product.interestRecalculationData.recalculationCompoundingFrequencyDate);
+                    }
+
+                }
+                if(scope.product.allowAttributeOverrides != null){
+                    scope.amortization = scope.product.allowAttributeOverrides.amortizationType;
+                    scope.arrearsTolerance = scope.product.allowAttributeOverrides.inArrearsTolerance;
+                    scope.graceOnArrearsAging = scope.product.allowAttributeOverrides.graceOnArrearsAgeing;
+                    scope.interestCalcPeriod = scope.product.allowAttributeOverrides.interestCalculationPeriodType;
+                    scope.interestMethod = scope.product.allowAttributeOverrides.interestType;
+                    scope.graceOnPrincipalAndInterest = scope.product.allowAttributeOverrides.graceOnPrincipalAndInterestPayment;
+                    scope.repaymentFrequency = scope.product.allowAttributeOverrides.repaymentEvery;
+                    scope.transactionProcessingStrategy = scope.product.allowAttributeOverrides.transactionProcessingStrategyId;
+                }
+                if(scope.amortization || scope.arrearsTolerance || scope.graceOnArrearsAgeing ||
+                scope.interestCalcPeriod || scope.interestMethod || scope.graceOnPrincipalAndInterest ||
+                scope.repaymentFrequency || scope.transactionProcessingStrategy == true){
+                    scope.allowAttributeConfiguration = true;
+                }
+                else{
+                    scope.allowAttributeConfiguration = false;
                 }
 
                 if (scope.product.holdGuaranteeFunds) {
@@ -170,11 +201,22 @@
                     _.each(scope.product.penaltyToIncomeAccountMappings, function (penalty) {
                         scope.penaltySpecificIncomeaccounts.push({
                             chargeId: penalty.charge.id,
-                            incomeAccountId: penalty.incomeAccount.id,
+                            incomeAccountId: penalty.incomeAccount.id
                         })
                     });
                 }
 
+                scope.formData.isLinkedToFloatingInterestRates = data.isLinkedToFloatingInterestRates ;
+                scope.formData.floatingRatesId = data.floatingRateId ;
+                scope.formData.interestRateDifferential = data.interestRateDifferential ;
+                scope.formData.isFloatingInterestRateCalculationAllowed = data.isFloatingInterestRateCalculationAllowed ;
+                scope.formData.minDifferentialLendingRate = data.minDifferentialLendingRate ;
+                scope.formData.defaultDifferentialLendingRate = data.defaultDifferentialLendingRate ;
+                scope.formData.maxDifferentialLendingRate = data.maxDifferentialLendingRate ;
+                scope.floatingRateOptions = data.floatingRateOptions ;
+                scope.formData.allowVariableInstallments = scope.product.allowVariableInstallments ;
+                scope.formData.minimumGap = scope.product.minimumGap;
+                scope.formData.maximumGap = scope.product.maximumGap;
             });
 
             scope.chargeSelected = function (chargeId) {
@@ -259,7 +301,7 @@
             };
 
             scope.deleteFee = function (index) {
-                scope.specificIncomeaccounts.splice(index, 1);
+                scope.specificIncomeAccountMapping.splice(index, 1);
             };
 
             scope.deletePenalty = function (index) {
@@ -304,11 +346,26 @@
                 }
             };
             scope.setFlag();
+
+            scope.setAttributeValues = function(){
+                if(scope.allowAttributeConfiguration == false){
+                    scope.amortization = false;
+                    scope.arrearsTolerance = false;
+                    scope.graceOnArrearsAging = false;
+                    scope.interestCalcPeriod = false;
+                    scope.interestMethod = false;
+                    scope.graceOnPrincipalAndInterest = false;
+                    scope.repaymentFrequency = false;
+                    scope.transactionProcessingStrategy = false;
+                }
+            }
+
             scope.submit = function () {
                 scope.paymentChannelToFundSourceMappings = [];
                 scope.feeToIncomeAccountMappings = [];
                 scope.penaltyToIncomeAccountMappings = [];
                 scope.chargesSelected = [];
+                scope.selectedConfigurableAttributes = [];
                 var reqFirstDate = dateFilter(scope.date.first, scope.df);
                 var reqSecondDate = dateFilter(scope.date.second, scope.df);
                 var temp = '';
@@ -346,12 +403,34 @@
                     scope.chargesSelected.push(temp);
                 }
 
+                if(scope.allowAttributeConfiguration == false){
+                    scope.amortization = false;
+                    scope.arrearsTolerance = false;
+                    scope.graceOnArrearsAging = false;
+                    scope.interestCalcPeriod = false;
+                    scope.interestMethod = false;
+                    scope.graceOnPrincipalAndInterest = false;
+                    scope.repaymentFrequency = false;
+                    scope.transactionProcessingStrategy = false;
+                }
+
+                scope.selectedConfigurableAttributes =
+                {amortizationType:scope.amortization,
+                    interestType:scope.interestMethod,
+                    transactionProcessingStrategyId:scope.transactionProcessingStrategy,
+                    interestCalculationPeriodType:scope.interestCalcPeriod,
+                    inArrearsTolerance:scope.arrearsTolerance,
+                    repaymentEvery:scope.repaymentFrequency,
+                    graceOnPrincipalAndInterestPayment:scope.graceOnPrincipalAndInterest,
+                    graceOnArrearsAgeing:scope.graceOnArrearsAging};
+
                 this.formData.paymentChannelToFundSourceMappings = scope.paymentChannelToFundSourceMappings;
                 this.formData.feeToIncomeAccountMappings = scope.feeToIncomeAccountMappings;
                 this.formData.penaltyToIncomeAccountMappings = scope.penaltyToIncomeAccountMappings;
                 this.formData.charges = scope.chargesSelected;
+                this.formData.allowAttributeOverrides = scope.selectedConfigurableAttributes;
                 this.formData.dateFormat = scope.df;
-                this.formData.locale = "en";
+                this.formData.locale = scope.optlang.code;
                 this.formData.startDate = reqFirstDate;
                 this.formData.closeDate = reqSecondDate;
 
@@ -359,12 +438,36 @@
                 if (this.formData.isInterestRecalculationEnabled) {
                     var restFrequencyDate = dateFilter(scope.date.recalculationRestFrequencyDate, scope.df);
                     scope.formData.recalculationRestFrequencyDate = restFrequencyDate;
+                    var compoundingFrequencyDate = dateFilter(scope.date.recalculationCompoundingFrequencyDate, scope.df);
+                    scope.formData.recalculationCompoundingFrequencyDate = compoundingFrequencyDate;
                 }else{
                     delete scope.formData.interestRecalculationCompoundingMethod;
                     delete scope.formData.rescheduleStrategyMethod;
                     delete scope.formData.recalculationRestFrequencyType;
                     delete scope.formData.recalculationRestFrequencyInterval;
                 }
+
+                if(this.formData.isLinkedToFloatingInterestRates) {
+                    delete scope.formData.interestRatePerPeriod ;
+                    delete scope.formData.minInterestRatePerPeriod ;
+                    delete scope.formData.maxInterestRatePerPeriod ;
+                    delete scope.formData.interestRateFrequencyType ;
+                }else {
+                    delete scope.formData.floatingRatesId ;
+                    delete scope.formData.interestRateDifferential ;
+                    delete scope.formData.isFloatingInterestRateCalculationAllowed ;
+                    delete scope.formData.minDifferentialLendingRate ;
+                    delete scope.formData.defaultDifferentialLendingRate ;
+                    delete scope.formData.maxDifferentialLendingRate ;
+
+                }
+
+                //If Variable Installments is not allowed for this product, remove the corresponding formData
+                if(!this.formData.allowVariableInstallments) {
+                    delete scope.formData.minimumGap ;
+                    delete scope.formData.maximumGap ;
+                }
+
                 resourceFactory.loanProductResource.put({loanProductId: routeParams.id}, this.formData, function (data) {
                     location.path('/viewloanproduct/' + data.resourceId);
                 });

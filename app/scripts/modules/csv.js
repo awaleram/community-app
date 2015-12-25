@@ -4,7 +4,7 @@
 // and are loaded in the correct order to satisfy dependency injection
 // before all nested files are concatenated by Grunt
 
-// Config
+// config
     angular.module('ngCsv.config', []).
         value('ngCsv.config', {
             debug: true
@@ -77,7 +77,7 @@
                                 }, infoArray);
                             }
 
-                            dataString = infoArray.join(",");
+                            dataString = '\"' + infoArray.join('\",\"') + '\"';
                             csvContent += index < data.length ? dataString + "\n" : dataString;
                         });
 

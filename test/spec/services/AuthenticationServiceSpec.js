@@ -14,7 +14,7 @@ describe("AuthenticationService", function () {
             });
         });
 
-        new mifosX.services.AuthenticationService(scope, httpService, localStorageService).authenticateWithUsernamePassword({
+        new mifosX.services.AuthenticationService(scope, httpService, 'basicauth', localStorageService).authenticateWithUsernamePassword({
             username: "test_username",
             password: "test_password"
         });
@@ -38,9 +38,9 @@ describe("AuthenticationService", function () {
 
     describe("On failed authentication", function () {
         it("should broadcast a 'UserAuthenticationFailureEvent' on failed authentication", function () {
-            callbacks['error']("test_data");
+            callbacks['error']("test_data", "status_code");
 
-            expect(scope.$broadcast).toHaveBeenCalledWith("UserAuthenticationFailureEvent", "test_data");
+            expect(scope.$broadcast).toHaveBeenCalledWith("UserAuthenticationFailureEvent", "test_data", "status_code");
         });
     });
 });

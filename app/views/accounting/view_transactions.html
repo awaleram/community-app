@@ -1,7 +1,13 @@
 <form class="col-md-12" ng-controller="ViewTransactionController">
-    <ul class="breadcrumb">
+    <ul class="breadcrumb" ng-if="productName == null">
         <li><a href="#/accounting">{{'label.anchor.accounting' | translate}}</a></li>
         <li class="active">{{'label.anchor.viewtransaction' | translate}}</li>
+    </ul>
+    <ul class="breadcrumb" ng-if="productName != null">
+        <li ng-if="groupId != null"><a href="#/viewgroup/{{groupId}}">{{groupName}}</a></li>
+        <li ng-if="clientId != null"><a href="#/viewclient/{{clientId}}">{{clientName}}</a></li>
+        <li class="active">{{productName}}({{accountNo}})</li>
+        <li class="active">{{'label.anchor.journalentries' | translate}}</li>
     </ul>
      <script type="text/ng-template" id="confirmation.html">
         <div class="modal-header silver">
@@ -20,6 +26,7 @@
     <script type="text/ng-template" id="viewjournalentry.html">
         <div class="modal-header silver">
             <h3 class="bolder">{{'label.heading.viewjournalentry' | translate}}</h3>
+			<legend></legend>
             <table class="modalwidth600">
                 <tr>
                     <td class="width31">{{'label.input.office' | translate}}</td>
@@ -47,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>{{transaction.entryType.code | translate}}</td>
-                    <td>{{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount}}</td>
+                    <td>{{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount | number}}</td>
                 </tr>
                 <tr ng-show="transaction.referenceNumber">
                     <td>{{'label.input.referencenumber' | translate}}</td>
@@ -56,6 +63,33 @@
                 <tr ng-show="transaction.comments">
                     <td>{{'label.input.comments' | translate}}</td>
                     <td>{{transaction.comments}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.heading.paymentdetails' | translate}}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'label.input.paymentypeid' | translate}}</td>
+                    <td> {{transaction.transactionDetails.paymentDetails.paymentType.name}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.input.accnum' | translate}}</td>
+                    <td>{{transaction.transactionDetails.paymentDetails.accountNumber}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.input.checknumber' | translate}}</td>
+                    <td>{{transaction.transactionDetails.paymentDetails.checkNumber}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.input.routingcode' | translate}}</td>
+                    <td>{{transaction.transactionDetails.paymentDetails.routingCode}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.input.receiptnumber' | translate}}</td>
+                    <td>{{transaction.transactionDetails.paymentDetails.receiptNumber}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.input.banknumber' | translate}}</td>
+                    <td>{{transaction.transactionDetails.paymentDetails.bankNumber}}</td>
                 </tr>
                 <tr>
                     <td>{{'label.createdby' | translate}}</td>
@@ -88,6 +122,8 @@
         </div>
     </script>
     <div class="well">
+        <div class="alert alert-success" role="alert" ng-if="clientId != null">These journal entries were created by the portfolio  transaction with the following details: <br> Client Loan transaction with Id : {{journalEntryTransactionId}} </div>
+        <div class="alert alert-success" role="alert" ng-if="groupId != null">These journal entries were created by the portfolio  transaction with the following details: <br> Group Loan transaction with Id : {{journalEntryTransactionId}} </div>
     	<div class="row">
     		<div class="col-md-12">
 		        <h3 class="bolder">{{ 'label.heading.transactionnumber' | translate }}&nbsp;-&nbsp;{{transactionNumber}}
@@ -101,6 +137,7 @@
 			        </div>
 		        </h3>
 		    </div>
+
 		    <table class="width100">
 		        <tr>
 		            <td class="width14"><label>{{'label.input.office' | translate}}</label></td>
@@ -133,18 +170,22 @@
 		                <td class="pointer" data-ng-click="showTransaction(transaction)">{{transaction.glAccountName}}({{transaction.glAccountCode}})</td>
 		                <td class="pointer" data-ng-click="showTransaction(transaction)">
 		                    <div ng-show="transaction.entryType.value == 'DEBIT'">
-		                        {{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount}}
+		                        {{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount | number}}
 		                    </div>
 		                </td>
 		                <td class="pointer" data-ng-click="showTransaction(transaction)">
 		                    <div ng-show="transaction.entryType.value == 'CREDIT'">
-		                        {{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount}}
+		                        {{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount | number}}
 		                    </div>
 		                </td>
 		            </tr>
 		            </tbody>
 		        </table>
 		    </div>
+            <div class="center" ng-if="productName != null">
+                <a href="#/viewloanaccount/{{loanId}}"
+                  class="btn btn-primary center"><i
+                    class="icon-white"></i>{{'label.button.back' | translate}}</a></div>
     	</div>
     </div>
 </form>
