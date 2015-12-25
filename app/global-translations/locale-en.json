@@ -3218,6 +3218,7 @@
     "deposutAccountOnHoldTransactionType.release":"Release",
     "label.heading.transactionType":"Transaction Type",
     "label.heading.transactionDate":"Transaction Date",
+    "label.heading.availablefunds": "Available Funds",
     "validation.msg.code.value.description.exceeds.max.length":"Description cannot be over {{params[0].value}} characters long..",
 
     "------------------": "------------",

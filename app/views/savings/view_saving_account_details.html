@@ -271,6 +271,12 @@
                                     </span></td>
                             </tr>
 
+                            <tr data-ng-show="savingaccountdetails.availableFunds">
+                                <td class="table-bold-acc fontnormal"> {{'label.heading.availablefunds' | translate}}</td>
+                                <td><span class="padded-td">{{ scope.availableFunds| number}}</span></td>
+                            </tr>
+
+
                         </table>
                     </div>
                 </tab>

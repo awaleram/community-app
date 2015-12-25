@@ -109,6 +109,15 @@
             resourceFactory.savingsResource.get({accountId: routeParams.id, associations: 'all'}, function (data) {
                 scope.savingaccountdetails = data;
                 scope.showonhold = true;
+
+                if(scope.status == "Active"){
+
+                    scope.availableFunds = scope.savingaccountdetails.availableFunds;
+
+                }else{
+                    scope.availableFunds = 0;
+                }
+
                 if(angular.isUndefined(data.onHoldFunds)){
                     scope.showonhold = false;
                 }
