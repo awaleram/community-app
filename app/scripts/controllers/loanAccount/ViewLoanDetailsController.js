@@ -155,6 +155,8 @@
                 scope.status = data.status.value;
                 scope.chargeAction = data.status.value == "Submitted and pending approval" ? true : false;
                 scope.decimals = data.currency.decimalPlaces;
+
+
                 if (scope.loandetails.charges) {
                     scope.charges = scope.loandetails.charges;
                     for (var i in scope.charges) {
@@ -168,12 +170,18 @@
 
                         if(scope.charges[i].chargeTimeType.value == 'Loan Application Fee' && scope.charges[i].paid == false){
                             var allowToPayCharge = true;
+                            var allowToEditCharge = true;
                         }else if(scope.status == "Active"){
                             var allowToPayCharge = true;
+                            var allowToEditCharge = true;
+                        }else if(scope.charges[i].paid == false && data.status.value =="Submitted and pending approval"){
+                            var allowToEditCharge = true;
                         }else{
                             var allowToPayCharge = false;
+                            var allowToEditCharge = false;
                         }
                         scope.charges[i].allowToPayCharge = allowToPayCharge;
+                        scope.charges[i].allowToEditCharge = allowToEditCharge;
                     }
 
 
