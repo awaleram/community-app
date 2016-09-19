@@ -29,6 +29,7 @@
 
             <div class="smsleftclass">
                 <div class="form-group">
+                    <div class="row">
                     <label  class="control-label col-sm-1">{{ 'label.input.office' | translate }}</label>
                     &nbsp;
 
@@ -49,22 +50,35 @@
                             </span>
                         </div>
 
-
-
                     </div>
                     <label  class="control-label col-sm-3">{{'label.input.selectedClients'|translate}} </label>
                     <label  class="control-label col-sm-3">{{'label.input.messageText'|translate}}<span
                             class="required">*</span></label>
 
+                    </div>
+                    <br/>
 
-                </div>
-
+                    <div class="row">
+                        <label class="control-label col-sm-1 text-right"> {{'label.input.clients.substatus'|translate}}</label>
+                        <div class="col-sm-3">
+                            <select chosen="clientSubStatusList" id="client" ng-model="clntSubStaus"
+                                    class="form-control"
+                                    ng-options="substatus.name for substatus in clientSubStatusList">
+                                <option value="">{{'label.anchor.all'|translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
                 <div class="form-group">
+
                     <div>
                         <label class="control-label col-sm-1"> {{'label.input.clients'|translate}}</label>
+
                         <div class="col-sm-3">
+
                             <select id="id" ng-model="formData.id" name="client" class="form-control multiselectsms" multiple required>
-                                <option ng-repeat="client in clients" value="{{client.id}}" ng-selected=selected>
+                                <option ng-repeat="client in clients | filter:fetchClientBySubStatus" value="{{client.id}}" ng-selected=selected>
+                                <!--<option ng-repeat="client in clients" value="{{client.id}}" ng-selected=selected>-->
                                     {{client.externalId}} {{client.displayName}} - {{client.mobileNo}}
                                 </option>
                             </select>

@@ -18,7 +18,8 @@
             scope.a = {};
             scope.officeId1=$rootScope.ofId;
             scope.send=true;
-
+            scope.activeClientStatus = 300;
+            scope.clientSubStatus = "ClientSubStatus";
 
             resourceFactory.officeResource.getAllOffices(function (data) {
                 scope.offices = data;
@@ -27,19 +28,28 @@
                 }
             });
 
+            resourceFactory.codeValuesForCodeResources.getAllCodeValues({codeName: scope.clientSubStatus},function (data) {
+                scope.clientSubStatusList = data;
+            });
+
+            scope.fetchClientBySubStatus = function (client) {
+                if((scope.isUndefinedOrNull(scope.clntSubStaus)) || (!scope.isUndefinedOrNull(scope.clntSubStaus) && scope.clntSubStaus.name.length == 0)){
+                    return true;
+                }
+                return angular.equals(client.subStatus.name, scope.clntSubStaus.name) ? true : false;
+            }
+
+            scope.isUndefinedOrNull = function(val) {
+                return angular.isUndefined(val) || val === null || val.length == 0;
+            }
+
             scope.addClient = function () {
                 for (var i in this.formData.id) {
                     for (var j in scope.clients) {
                         if (scope.clients[j].id == this.formData.id[i]) {
-                            var temp = {};
-                            temp.id = this.formData.id[i];
-                            temp.mobileNo = scope.clients[j].mobileNo;
-                            temp.displayName = scope.clients[j].displayName;
-                            temp.externalId = scope.clients[j].externalId;
-                            scope.client.push(temp);
+                            scope.client.push(scope.clients[j]);
                             scope.clients.splice(j, 1);
                         }
-
                     }
                 }
 
@@ -51,13 +61,7 @@
                 for (var i in this.formData.client) {
                     for (var j in scope.client) {
                         if (scope.client[j].id == this.formData.client[i]) {
-
-                            var temp = {};
-                            temp.id = this.formData.client[i];
-                            temp.displayName = scope.client[j].displayName;
-                            temp.mobileNo = scope.client[j].mobileNo;
-                            temp.externalId = scope.client[j].externalId;
-                            scope.clients.push(temp);
+                            scope.clients.push(scope.client[j]);
                             scope.client.splice(j, 1);
                         }
                     }
@@ -77,27 +81,27 @@
                 //reduce the size of clients by 1;
                 this.formData.clients =this.formData.clients-1;
                 for (var l in scope.clients) {
-
-                    var temp = {};
-                    temp.id = scope.clients[l].id;
-                    temp.displayName = scope.clients[l].displayName;
-                    temp.mobileNo = scope.clients[l].mobileNo;
-                    temp.externalId = scope.clients[l].externalId;
-                    scope.client.push(temp);
+                    if(!scope.isUndefinedOrNull(scope.clntSubStaus) && scope.clients[l].subStatus.name == scope.clntSubStaus.name){
+                        scope.client.push(scope.clients[l]);
+                    }else if(scope.isUndefinedOrNull(scope.clntSubStaus)){
+                        scope.client.push(scope.clients[l]);
+                    }
+                }
+                var Index;
+                for (var i=0; i<scope.client.length; i++) {
+                    Index = scope.clients.indexOf(scope.client[i]);
+                    if (Index > -1) {
+                        scope.clients.splice(Index, 1);
+                    }
                 }
                 //scope.client= scope.mobileNo;
-                scope.clients = [];
+                //scope.clients = [];
 
             }
 
             scope.clear = function () {
                 for (var l in scope.client) {
-                    var temp = {};
-                    temp.id = scope.client[l].id;
-                    temp.displayName = scope.client[l].displayName;
-                    temp.mobileNo = scope.client[l].mobileNo;
-                    temp.externalId = scope.client[l].externalId;
-                    scope.clients.push(temp);
+                        scope.clients.push(scope.client[l]);
                 }
                 scope.client = [];
                 scope.selected = false;
@@ -126,6 +130,7 @@
                 scope.officeId1 = officeId;
                 var params = {};
                 params.officeId = officeId;
+                params.clientStatus = scope.activeClientStatus;
                 scope.formData.mobileNo = "";
 
                 var items = resourceFactory.clientResource.getAllClients(params, function (data) {
