@@ -145,6 +145,7 @@
     "label.input.office": "Office",
     "label.input.client": "Client",
     "label.input.clients": "Clients",
+    "label.input.clients.substatus": "Sub Status",
     "label.input.enternote": "Enter note",
     "label.input.notes": "Notes",
     "label.input.externalid": "External id",
