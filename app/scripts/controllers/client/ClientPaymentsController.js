@@ -984,7 +984,8 @@
                             if(data.length ==1 && data[0].body != null){
 
                                 if(data[0].body.indexOf('Developer') > 0 || data[0].body.indexOf('developer') > 0){
-                                    scope.Error = data[0].body;
+                                    scope.er = JSON.parse(data[0].body)['errors'];
+                                    scope.Error = scope.er[0].defaultUserMessage;
                                     scope.showErrorMsg=true;
                                     return;
                                 } else  if(data[0].body.indexOf('Exception') > 0){
@@ -1254,7 +1255,8 @@
                             if(data.length ==1 && data[0].body != null){
 
                                 if(data[0].body.indexOf('Developer') > 0 || data[0].body.indexOf('developer') > 0){
-                                    scope.Error = data[0].body;
+                                    scope.er = JSON.parse(data[0].body)['errors'];
+                                    scope.Error = scope.er[0].defaultUserMessage;
                                     scope.showErrorMsg=true;
                                     return;
                                 } else  if(data[0].body.indexOf('Exception') > 0){
