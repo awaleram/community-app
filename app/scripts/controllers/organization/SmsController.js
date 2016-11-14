@@ -131,6 +131,7 @@
                 var params = {};
                 params.officeId = officeId;
                 params.clientStatus = scope.activeClientStatus;
+                params.sqlSearch =  '(c.mobile_no is not null AND LENGTH(c.mobile_no) = 12)';
                 scope.formData.mobileNo = "";
 
                 var items = resourceFactory.clientResource.getAllClients(params, function (data) {
