@@ -1228,6 +1228,8 @@
     "label.heading.enterpaymentdate": "Enter Payment Date",
     "label.heading.loandocuments":"Loan Documents",
     "label.heading.guarantordetails":"Guarantor Details",
+    "label.heading.onholdtransactionsview":"Guarantor Details",
+    "label.heading.guaranteeDetails":"Guarantee Details",
     "label.heading.transactions":"Transactions",
     "label.heading.interestChargedFrom":"Interest Charged From",
     "label.heading.advanceaccountingrules":"Advance Accounting Rules",

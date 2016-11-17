@@ -505,6 +505,9 @@
             .when('/viewonholdtransactions/:savingsId/:fromPath/:fromPathId', {
                 templateUrl: 'views/savings/list_onhold_transactions.html'
             })
+            .when('/onholdtransactionsview/:savingsId', {
+                templateUrl: 'views/savings/onhold_transactions.html'
+            })
             .when('/groups', {
                 templateUrl: 'views/groups/groups.html'
             })
