@@ -1,0 +1,86 @@
+<div class="col-md-12" ng-controller="OnHoldTransactionController">
+    <div>
+        <ul class="breadcrumb">
+            <li ng-show="savingaccountdetails.groupName"><a href="#/viewgroup/{{savingaccountdetails.groupId}}">{{savingaccountdetails.groupName}}</a>
+            <li ng-show="savingaccountdetails.clientName"><a href="#/viewclient/{{savingaccountdetails.clientId}}">{{savingaccountdetails.clientName}}</a>
+            <li ng-show="savingaccountdetails.clientName"><a href="#/viewsavingaccount/{{savingaccountdetails.id}}">{{savingaccountdetails.savingsProductName}}({{savingaccountdetails.accountNo}})</a>
+        </ul>
+    </div>
+    <div class="span gray-head" style="margin-left:0%;">
+          <span style="margin-left: 10px;font-size:20px">
+                <strong> {{'label.heading.guaranteeDetails' | translate}}</strong>
+          </span>
+    </div>
+    <div class="row span" style="margin-left:-1px;margin-top: 20px">
+        <div class="col-sm-6 col-md-6">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td>{{'label.heading.activatedon' | translate}}</td>
+                    <td>{{savingaccountdetails.timeline.activatedOnDate | DateFormat}}<span
+                            data-ng-hide="savingaccountdetails.timeline.activatedOnDate">{{ 'label.notactivated' | translate }}</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>{{'label.heading.currency' | translate}}</td>
+                    <td>{{savingaccountdetails.currency.name}}</td>
+                </tr>
+                <tr>
+                    <td>{{'label.heading.externalid' | translate}}</td>
+                    <td>{{savingaccountdetails.externalId}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td>{{'label.heading.fieldofficer' | translate}}</td>
+                    <td>{{savingaccountdetails.fieldOfficerName}}<span data-ng-hide="savingaccountdetails.fieldOfficerName">{{'label.unassigned' | translate}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{'label.heading.balance' | translate}}</td>
+                    <td>{{savingaccountdetails.summary.accountBalance | number}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div ng-show="guarantorDetails" class="marginbuttontop25px">
+        <table class="table">
+            <thead>
+
+            <tr class="graybg">
+                <th>{{'label.heading.fullname' | translate}}</th>
+                <th>{{'label.heading.loanaccount' | translate}}</th>
+                <th>{{'label.heading.guarantee.amount' | translate}}</th>
+                <th>{{'label.heading.guarantee.amount.remaining' | translate}}</th>
+                <th>{{'label.heading.guarantee.status' | translate}}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody data-ng-repeat="guarantor in guarantorDetails"  >
+            <tr data-ng-show="guarantor.guarantorFundingDetails "
+                data-ng-repeat="guarantorfund in guarantor.guarantorFundingDetails " >
+                <td>{{guarantor.clientName}}</td>
+
+                <td>{{guarantor.accountNumber}}</td>
+                <td>{{guarantorfund.amount | number}}</td>
+                <td>{{guarantorfund.amountRemaining | number}}</td>
+                <td>{{guarantorfund.status.code | translate}}</td>
+                <td>
+                    <a has-permission='READ_SAVINGSACCOUNT' id="viewtransactions"
+                       href="#/viewguarantortransactions/{{guarantorfund.savingsAccount.id}}/{{guarantorfund.id}}/onholdtransactionsview/{{savingaccountdetails.id}}"
+                       class="btn btn-default">{{ 'label.button.viewtransactions' |
+                        translate }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <hr/>
+    </div>
+
+    <div ng-show="guarantorDetails" class="col-md-offset-10" style="margin-bottom: 40px">
+        <a id="cancel" href="#/viewsavingaccount/{{savingaccountdetails.id}}" class="btn btn-default">{{ 'label.button.cancel' |
+            translate }}</a>
+    </div>
+</div>

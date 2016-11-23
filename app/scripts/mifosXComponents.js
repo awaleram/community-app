@@ -164,6 +164,7 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'savings/SavingAccountActionsController',
             'savings/AddSavingInvestmentController',
             'savings/ListOnHoldTransactionController',
+            'savings/OnHoldTransactionController',
             'accounttransfers/ViewAccountTransferDetailsController',
             'accounttransfers/MakeAccountTransferController',
             'accounttransfers/CreateStandingInstructionController',
