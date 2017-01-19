@@ -119,6 +119,7 @@
             var param = {};
             scope.filterText = "";
             param.officeId = scope.officeId1;
+            param.mobileNoLength = '12';
             var items = resourceFactory.clientResource.getAllClients(param, function (data) {
                 scope.totalClients = data.totalFilteredRecords;
                 scope.clients = data.pageItems;
