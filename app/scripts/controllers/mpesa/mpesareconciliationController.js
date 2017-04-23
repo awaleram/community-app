@@ -36,7 +36,7 @@
             scope.fetchFunction = function (offset, limit, callback) {
                 http({
                     method: 'GET',
-                    url: 'https://localhost:9292/caritasmpesa/mpesa/Search?status=' + scope.text + '&FromDate=' + scope.fromDate + '&ToDate=' + scope.toDate + '&mobileNo=' + scope.searcText + '&officeId=' + scope.officeId + '&offset=' + offset + '&limit=' + limit
+                    url: 'https://54.72.21.49/caritasmpesa/mpesa/Search?status=' + scope.text + '&FromDate=' + scope.fromDate + '&ToDate=' + scope.toDate + '&mobileNo=' + scope.searcText + '&officeId=' + scope.officeId + '&offset=' + offset + '&limit=' + limit
                 }).then(function (data) {
                     scope.completetransaction.currentPageItems = data.data.pageItems;
                     scope.completetransaction.hasNextVar = data.data.pageItems.length === scope.itemPerPage;
@@ -46,7 +46,7 @@
             scope.fetchUmappedTransactionFunction = function (offset, limit, callback) {
                 http({
                     method: 'GET',
-                    url: 'https://localhost:9292/caritasmpesa/mpesa/getunmappedtransactions?officeId='+scope.officeId+ '&offset=' + offset + '&limit=' + limit
+                    url: 'https://54.72.21.49/caritasmpesa/mpesa/getunmappedtransactions?officeId='+scope.officeId+ '&offset=' + offset + '&limit=' + limit
                 }).then(function (data) {
                     scope.completetransaction.currentPageItems = data.data.pageItems;
                     scope.completetransaction.hasNextVar = data.data.pageItems.length === scope.itemPerPage;
@@ -157,7 +157,7 @@
 
             var ClientDeleteCtrl = function ($scope, $modalInstance) {
 
-                $http.get("https://localhost:8443/mifosng-provider/api/v1/clients/"+scope.clientId+"/Mpesa?TransactionDate="+scope.TransactionDate+"&ReceiptNo="+scope.ReceiptNo).success(function(data) {
+                $http.get("https://54.72.21.49:8443/mifosng-provider/api/v1/clients/"+scope.clientId+"/Mpesa?TransactionDate="+scope.TransactionDate+"&ReceiptNo="+scope.ReceiptNo).success(function(data) {
                     deferred.resolve(data);
                     $scope.transactionData = data;
 
